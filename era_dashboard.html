@@ -51,7 +51,7 @@ h1{margin:0;font-size:clamp(23px,2.4vw,34px);letter-spacing:-.035em}p{margin:0}.
 .info-value{background:#e9f2ff;border:1px solid #d6e5fc;border-radius:9px;padding:7px 10px;font-weight:700;text-align:right;font-variant-numeric:tabular-nums}
 .info-value.age{color:#bb303b;background:#fff0f1;border-color:#fac0c8}
 .status-note{font-size:11px;color:#56698e;margin-top:9px;line-height:1.4}
-.debug{margin-top:22px;border:1px solid #d7e6fc;border-radius:13px;background:#fafdff}.debug summary{cursor:pointer;font-size:12px;color:#55709c;font-weight:750;padding:12px 15px}.debug-inner{padding:2px 15px 15px;overflow:auto}
+.debug[hidden]{display:none!important}.debug{margin-top:22px;border:1px solid #d7e6fc;border-radius:13px;background:#fafdff}.debug summary{cursor:pointer;font-size:12px;color:#55709c;font-weight:750;padding:12px 15px}.debug-inner{padding:2px 15px 15px;overflow:auto}
 .debug table{border-collapse:collapse;width:100%;font-size:12px}th,td{padding:8px;text-align:left;border-bottom:1px solid #d8e6f7;white-space:nowrap}
 .debug pre{max-height:200px;overflow:auto;background:#eef5ff;color:#223d7f;padding:12px;border-radius:8px;font-size:10px;white-space:pre-wrap;overflow-wrap:anywhere}
 .debug button{margin-top:10px;border:1px solid #b2cef4;border-radius:7px;background:#eaf4ff;color:#164bac;padding:8px 12px;cursor:pointer}
@@ -115,12 +115,10 @@ h1{margin:0;font-size:clamp(23px,2.4vw,34px);letter-spacing:-.035em}p{margin:0}.
   <div class="info-rows">
    <div class="info-row"><div class="info-name"><svg class="symbol"><use href="#calendar"/></svg>Thời điểm dữ liệu</div><div class="info-value" id="dataTime">—</div></div>
    <div class="info-row"><div class="info-name"><svg class="symbol"><use href="#clock"/></svg>Độ trễ dữ liệu</div><div class="info-value" id="dataAge">—</div></div>
-   <div class="info-row"><div class="info-name"><svg class="symbol"><use href="#sync"/></svg>Thời điểm nhận tại E-Ra Widget</div><div class="info-value" id="receiveTime">—</div></div>
   </div>
-  <p class="status-note">Đã nhận dữ liệu từ E-Ra không đồng nghĩa thiết bị đang online. Thời điểm dữ liệu được lấy từ timestamp của Datastream.</p>
  </section>
 </div>
-<details class="debug"><summary>Chi tiết kỹ thuật · E-Ra Debug</summary>
+<details class="debug" hidden aria-hidden="true"><summary>Chi tiết kỹ thuật · E-Ra Debug</summary>
  <div class="debug-inner"><div id="debugCounts" class="status-note"></div>
   <div style="overflow:auto"><table><thead><tr><th>Datastream</th><th>ID cố định</th><th>Tên từ E-Ra</th><th>Giá trị</th><th>last_updated</th></tr></thead><tbody id="debugRows"></tbody></table></div>
   <button type="button" id="copyDebug">Sao chép / tải JSON debug</button><pre id="debugLog"></pre>
@@ -153,7 +151,7 @@ const DEFS=[
 const $=id=>document.getElementById(id);
 const DAY=86400000,STALE=5*60000;
 const CHART_COLORS=["#058bf5","#09ba62","#ffae00","#9958f4"];
-let configs=[],historyConfigs=[],values={},histories=[],historyValues={},logs=[],widget=null,gotValues=false,lastReceive=null,lastHeight=0;
+let configs=[],historyConfigs=[],values={},histories=[],historyValues={},logs=[],widget=null,gotValues=false,lastReceive=null,lastHeight=0,mobileResizeTimer=null;
 let requestedWindow=null,requestedAnchor=null,historyRequestCount=0;
 const NAMES=new Map(),ACCEPTED=new Set(),HISTORY_IDS=new Set();
 $("brandLogo").src="data:image/webp;base64,"+"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";
@@ -202,7 +200,6 @@ function renderTime(){
  const t=stamps.length?Math.max(...stamps):NaN;
  $("dataTime").textContent=timeText(t);
  const d=$("dataAge");d.textContent=Number.isFinite(t)?ageText(Date.now()-t):"Chưa có dữ liệu";d.classList.toggle("age",Number.isFinite(t)&&Date.now()-t>STALE);
- $("receiveTime").textContent=timeText(lastReceive??NaN);
  const status=$("connection"),text=$("connectionText");
  if(gotValues||Object.keys(historyValues).length){status.className="connected";text.textContent="Đã nhận dữ liệu E-Ra"}
  else if(configs.length){status.className="connected wait";text.textContent="Đang chờ dữ liệu"}
@@ -213,8 +210,18 @@ function renderDebug(){
  for(const def of DEFS){const o=item(def.key),tr=document.createElement("tr");for(const v of [def.key,DATASTREAM_IDS[def.key],o.valid?displayName(def.key):"Chưa được gán",o.raw===undefined?"—":o.raw,Number.isFinite(o.t)?new Date(o.t).toISOString():"—"]){const td=document.createElement("td");td.textContent=String(v);tr.appendChild(td)}body.appendChild(tr)}
  $("debugCounts").textContent=ACCEPTED.size+" Realtime Configs · "+HISTORY_IDS.size+" History Configs · "+Object.keys(values).length+" giá trị realtime · "+Object.keys(historyValues).length+" giá trị lịch sử";
 }
-function resizeIframe(){if(!widget||window.innerWidth>800)return;const h=Math.ceil(document.documentElement.scrollHeight+10);if(h!==lastHeight&&typeof widget.requestAdjustMobileHeight==="function"){lastHeight=h;try{widget.requestAdjustMobileHeight(h)}catch(e){log("MOBILE_HEIGHT",String(e))}}}
-function render(){renderMetrics();renderTemps();renderDevices();renderTime();renderDebug();setTimeout(resizeIframe,40)}
+function resizeIframe(){
+ if(!widget||window.innerWidth>800||typeof widget.requestAdjustMobileHeight!=="function")return;
+ // Only after layout changes: let the E-Ra outer page own vertical scrolling.
+ const h=Math.ceil(document.documentElement.scrollHeight+12);
+ if(!Number.isFinite(h)||h<=0||Math.abs(h-lastHeight)<24)return;
+ try{widget.requestAdjustMobileHeight(h);lastHeight=h}catch(e){log("MOBILE_HEIGHT",String(e))}
+}
+function scheduleMobileHeight(){
+ if(mobileResizeTimer!==null)clearTimeout(mobileResizeTimer);
+ mobileResizeTimer=setTimeout(()=>{mobileResizeTimer=null;resizeIframe()},180);
+}
+function render(){renderMetrics();renderTemps();renderDevices();renderTime();renderDebug()}
 function svgNode(tag,attributes){const el=document.createElementNS("http://www.w3.org/2000/svg",tag);for(const k in attributes)el.setAttribute(k,String(attributes[k]));return el}
 function drawChart(){
  const svg=$("historyChart");svg.replaceChildren();const left=56,right=575,top=20,bottom=200,width=right-left,height=bottom-top;
@@ -280,7 +287,7 @@ function onConfiguration(input){
   if(config)NAMES.set(def.key,String(config.name??"").trim()||def.fallback);
  }
  log("CONFIGURATION",{realtime:configs,history:historyConfigs});
- render();drawChart();
+ render();drawChart();scheduleMobileHeight();
  if(historyConfigs.length)setTimeout(()=>requestHistory(),350);
 }
 function onValues(input){
@@ -304,16 +311,16 @@ function onHistory(input){
   if(newest)historyValues[id]={value:newest.value,last_updated:new Date(newest.t).toISOString()};
  }
  log("HISTORY",{series:incoming.length,points:incoming.map(s=>({id:s.id,count:s.data?.length??0})),latestIDs:Object.keys(historyValues)});
- render();drawChart();resizeIframe();
+ render();drawChart();scheduleMobileHeight();
 }
 $("refreshHistory").addEventListener("click",()=>requestHistory(true));
 $("copyDebug").addEventListener("click",async()=>{const content=JSON.stringify({configs,historyConfigs,values,ids:DATASTREAM_IDS,logs},null,2);try{await navigator.clipboard.writeText(content);$("copyDebug").textContent="Đã sao chép"}catch{const url=URL.createObjectURL(new Blob([content],{type:"application/json"}));const a=document.createElement("a");a.href=url;a.download="era-debug.json";a.click();setTimeout(()=>URL.revokeObjectURL(url),1000)}});
-window.addEventListener("resize",()=>{drawChart();resizeIframe()});
+window.addEventListener("resize",()=>{drawChart();scheduleMobileHeight()});
 render();drawChart();
 if(typeof EraWidget==="function"){
- try{widget=new EraWidget();widget.init({needRealtimeConfigs:true,needHistoryConfigs:true,needActions:false,maxRealtimeConfigsCount:11,minRealtimeConfigsCount:0,maxHistoryConfigsCount:5,minHistoryConfigsCount:0,maxActionsCount:0,minActionsCount:0,mobileHeight:1500,onConfiguration,onValues,onHistory});log("INIT","Đã khởi tạo EraWidget")}catch(e){log("INIT_ERROR",String(e));$("connectionText").textContent="Lỗi E-Ra"}
+ try{widget=new EraWidget();widget.init({needRealtimeConfigs:true,needHistoryConfigs:true,needActions:false,maxRealtimeConfigsCount:11,minRealtimeConfigsCount:0,maxHistoryConfigsCount:5,minHistoryConfigsCount:0,maxActionsCount:0,minActionsCount:0,mobileHeight:650,onConfiguration,onValues,onHistory});log("INIT","Đã khởi tạo EraWidget");scheduleMobileHeight()}catch(e){log("INIT_ERROR",String(e));$("connectionText").textContent="Lỗi E-Ra"}
 }else{log("SCRIPT_ERROR","Không tải được thư viện EraWidget");$("connectionText").textContent="Chưa tải được E-Ra"}
-setInterval(()=>{renderTime();resizeIframe()},30000);
+setInterval(()=>{renderTime()},30000);
 </script>
 </body>
 </html>
