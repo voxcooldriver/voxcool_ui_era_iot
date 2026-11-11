@@ -2,163 +2,151 @@
 <html lang="vi">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>E-Ra | Kiểm tra 11 Datastreams — Kho lạnh 1</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#101e32">
+<title>Kho lạnh 1 | VOX Cool</title>
 <style>
-:root{font-family:system-ui,-apple-system,'Segoe UI',sans-serif;color:#18253b;background:#f4f7fb}*{box-sizing:border-box}body{margin:0}main{max-width:1250px;margin:auto;padding:24px 18px 60px}header{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:20px}h1{font-size:24px;margin:0}h2{font-size:17px;margin:24px 0 12px}p{line-height:1.5}small,.muted{color:#64748b}.status{border:1px solid #cbd5e1;border-radius:40px;padding:8px 12px;background:white;font-size:13px}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(195px,1fr));gap:12px}.card,.panel{border:1px solid #e2e8f0;background:#fff;border-radius:12px;padding:16px;box-shadow:0 2px 7px #15234208}.card .label{font-weight:600;font-size:14px}.card .key{font:12px ui-monospace,Consolas,monospace;color:#64748b;margin-top:5px}.card .value{font-size:27px;font-weight:750;margin-top:14px;overflow-wrap:anywhere}.card .detail{font-size:12px;color:#64748b;margin-top:7px}.card .ok{color:#127847}.card .bad{color:#ad3030}.note{padding:12px 15px;background:#eaf2ff;border-radius:9px;color:#26456f;font-size:14px}.table-wrap{overflow-x:auto}table{width:100%;border-collapse:collapse;font-size:13px}th,td{text-align:left;padding:10px 9px;border-bottom:1px solid #e2e8f0;white-space:nowrap}th{background:#f8fafc}select{padding:7px;max-width:240px;width:100%;background:#fff;border:1px solid #cbd5e1;border-radius:7px}button{border:1px solid #cbd5e1;background:white;color:#1e293b;border-radius:8px;padding:8px 12px;cursor:pointer}button:hover{background:#f1f5f9}pre{background:#0f172a;color:#d3e5f7;padding:14px;overflow:auto;border-radius:10px;font-size:12px;max-height:260px}.toolbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:space-between}.alert{color:#a62424;font-size:14px}code{font-family:ui-monospace,Consolas,monospace}
+:root{color-scheme:dark;--bg:#0b1422;--surface:#142238;--surface2:#1a2b43;--border:#2d3d53;--text:#f2f7ff;--muted:#9bafc5;--accent:#52bafb;--green:#44d6a0;--red:#ff858b;--amber:#ffcb72;font-family:Inter,system-ui,-apple-system,"Segoe UI",Arial,sans-serif}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--text);min-width:280px}
+main{max-width:1320px;margin:auto;padding:24px clamp(12px,3vw,32px) 54px}
+header{display:flex;justify-content:space-between;gap:16px;align-items:flex-start;margin-bottom:22px;flex-wrap:wrap}
+.brand{font-size:12px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);margin-bottom:8px}
+h1{font-size:clamp(26px,3vw,36px);line-height:1.2;letter-spacing:-.04em;margin:0 0 8px}
+.sub{font-size:13px;color:var(--muted);line-height:1.5}
+.top-right{text-align:right}.chip{display:inline-flex;align-items:center;gap:8px;padding:9px 12px;border:1px solid var(--border);border-radius:99px;background:var(--surface);font-size:12px;font-weight:700;max-width:100%}
+.dot{height:9px;width:9px;border-radius:50%;background:var(--amber);flex:none}
+.chip.good .dot{background:var(--green)}.chip.bad .dot{background:var(--red)}
+.time{display:block;font-size:11px;color:var(--muted);margin-top:7px}
+.summary{display:grid;grid-template-columns:1.35fr 1fr 1fr;gap:14px;margin-bottom:24px}
+.panel{background:var(--surface);border:1px solid var(--border);border-radius:17px;padding:18px;min-width:0}
+.panel-eyebrow{color:var(--muted);font-size:12px;font-weight:700;margin-bottom:10px}
+.hero-val{font-weight:750;font-size:clamp(28px,4vw,45px);letter-spacing:-.045em;line-height:1.1}
+.hero-val small{font-size:16px;font-weight:500;color:var(--muted)}
+.panel-meta{color:var(--muted);font-size:12px;margin-top:10px;line-height:1.45}
+.section{display:flex;justify-content:space-between;align-items:center;gap:10px;margin:25px 0 12px}
+h2{font-size:16px;letter-spacing:-.01em;margin:0}.section-note{color:var(--muted);font-size:11px}
+.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+.card{position:relative;overflow:hidden;background:var(--surface);border:1px solid var(--border);border-radius:16px;min-height:158px;padding:17px;display:flex;flex-direction:column;gap:10px}
+.card-label{font-size:13px;font-weight:650;color:#d9e6f5}.key{font-size:10px;color:var(--muted);font-family:ui-monospace,monospace;word-break:break-word}
+.reading{font-size:clamp(26px,3vw,35px);font-weight:750;letter-spacing:-.045em;line-height:1.12;margin-top:auto;font-variant-numeric:tabular-nums}
+.reading .unit{font-size:14px;color:var(--muted);font-weight:550;margin-left:4px}
+.reading.small{font-size:24px}
+.card-meta{font-size:11px;color:var(--muted);line-height:1.4;min-height:16px}
+.card.stale{border-color:#786241}.card.stale .card-meta{color:var(--amber)}
+.card.missing{border-style:dashed}
+.state{display:inline-flex;align-items:center;gap:9px;font-size:22px;font-weight:750;letter-spacing:-.02em;margin-top:auto}
+.state .light{height:11px;width:11px;border-radius:50%;background:var(--muted)}
+.state.on{color:var(--green)}.state.on .light{background:var(--green)}
+.state.off{color:#a7b8ca}.state.off .light{background:#74869c}
+.state.open{color:var(--amber)}.state.open .light{background:var(--amber)}
+.warning{background:#382b21;border:1px solid #86623f;border-radius:12px;color:#ffe0a5;font-size:12px;line-height:1.5;padding:12px 15px;margin:12px 0 20px}
+.hidden{display:none!important}
+details.debug{margin-top:32px;background:var(--surface);border:1px solid var(--border);border-radius:15px;overflow:hidden}
+details.debug summary{cursor:pointer;padding:16px 18px;font-weight:700;font-size:13px;list-style-position:inside}
+.debug-body{padding:0 18px 18px}.debug-info{font-size:12px;color:var(--muted);line-height:1.6}
+.scroll{overflow:auto;max-width:100%}table{border-collapse:collapse;width:100%;font-size:12px;text-align:left}th,td{padding:10px 9px;border-bottom:1px solid var(--border);white-space:nowrap}th{color:var(--muted);font-weight:650}td{color:#e4eff9}
+select{width:100%;min-width:200px;padding:9px 10px;border:1px solid var(--border);color:var(--text);background:var(--surface2);border-radius:8px}
+button{background:#244866;border:1px solid #39698b;color:#e9f8ff;cursor:pointer;border-radius:9px;padding:10px 13px;font-weight:700;margin:10px 0}
+pre{max-height:260px;overflow:auto;white-space:pre-wrap;overflow-wrap:anywhere;background:#091321;border-radius:10px;padding:12px;color:#b8d5f3;font-size:11px}
+footer{font-size:11px;color:var(--muted);text-align:center;margin-top:24px}
+@media(max-width:960px){.summary{grid-template-columns:repeat(3,minmax(0,1fr))}.grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:560px){main{padding:16px 12px 40px}header{margin-bottom:15px}.top-right{text-align:left}h1{font-size:28px}.summary{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin-bottom:18px}.summary>.panel:first-child{grid-column:1/-1}.panel{padding:15px}.hero-val{font-size:32px}.grid{gap:9px}.card{min-height:138px;padding:13px;border-radius:13px;gap:7px}.reading{font-size:28px}.reading .unit{font-size:12px}.state{font-size:20px}.section{margin-top:21px}.card-label{font-size:12px}.section-note{font-size:10px}details.debug{margin-top:24px}}
+@media(max-width:345px){.grid{grid-template-columns:1fr 1fr}.reading{font-size:24px}.state{font-size:17px}}
 </style>
 </head>
 <body>
 <main>
-<header><div><h1>Kho lạnh 1 · Kiểm tra dữ liệu E-Ra</h1><small>11 Datastreams · Chỉ đọc · Không gửi lệnh điều khiển</small></div><span class="status" id="connection">Đang chờ cấu hình E-Ra…</span></header>
-<p class="note">Widget chỉ nhận các Datastream được gán cho <b>chính widget tùy chỉnh này</b>. 12 widget mặc định đã tồn tại trên Dashboard E-Ra không đồng nghĩa cấu hình này tự được truyền sang widget mới. Mở trang trong E-Ra để thử kết nối.</p>
-<section id="cards"></section>
-<h2>Ánh xạ Datastream ↔ Cấu hình E-Ra</h2>
-<div class="panel"><p class="muted">Nếu E-Ra trả về tên cấu hình trùng chính xác Datastream, trang sẽ tự ghép. Nếu không, hãy chọn thủ công từng dòng theo <code>name / id / sensor_id / chip_id</code> được E-Ra cung cấp. Không tự suy đoán theo vị trí mảng.</p><div class="table-wrap"><table><thead><tr><th>Datastream</th><th>Cấu hình được chọn</th><th>Giá trị raw</th><th>Tình trạng</th></tr></thead><tbody id="mapping"></tbody></table></div><p id="warnings" class="alert" role="status"></p></div>
-<h2>Các cấu hình mà E-Ra thực sự trả về</h2>
-<div class="panel"><div class="toolbar"><span class="muted" id="counts">Chưa nhận cấu hình</span><button id="copy" type="button">Copy log debug</button></div><div class="table-wrap"><table><thead><tr><th>Vị trí</th><th>name</th><th>id</th><th>sensor_id</th><th>chip_id</th><th>Giá trị</th></tr></thead><tbody id="configs"><tr><td colspan="6">Đang chờ E-Ra…</td></tr></tbody></table></div></div>
-<h2>Log debug (giữ tối đa 80 sự kiện)</h2><pre id="log" aria-live="off"></pre>
+<header>
+<div><div class="brand">VOX COOL · IoT MONITORING</div><h1>Kho lạnh 1</h1><div class="sub">Giám sát nhiệt độ, trạng thái thiết bị và điện năng</div></div>
+<div class="top-right"><div id="connection" class="chip"><span class="dot"></span><span id="connectionText">Đang kết nối E-Ra…</span></div><span id="lastReceive" class="time">Chưa nhận dữ liệu</span></div>
+</header>
+<div id="staleWarning" class="warning hidden" role="status"></div>
+<div class="summary">
+<div class="panel"><div class="panel-eyebrow">Nhiệt độ 1</div><div class="hero-val" id="heroTemp">— <small>°C</small></div><div class="panel-meta" id="heroMeta">Đang chờ dữ liệu</div></div>
+<div class="panel"><div class="panel-eyebrow">Máy nén</div><div class="hero-val" id="heroCompressor">—</div><div class="panel-meta" id="compressorMeta">Chưa nhận dữ liệu</div></div>
+<div class="panel"><div class="panel-eyebrow">Cửa kho</div><div class="hero-val" id="heroDoor">—</div><div class="panel-meta" id="doorMeta">Chưa nhận dữ liệu</div></div>
+</div>
+<div class="section"><h2>Nhiệt độ & độ ẩm</h2><span class="section-note">Giá trị cuối E-Ra cung cấp</span></div>
+<div class="grid" id="environment"></div>
+<div class="section"><h2>Trạng thái thiết bị</h2><span class="section-note">Chỉ giám sát · Không điều khiển</span></div>
+<div class="grid" id="equipment"></div>
+<div class="section"><h2>Điện năng</h2><span class="section-note">Công suất & điện năng tích lũy</span></div>
+<div class="grid" id="electricity"></div>
+<details class="debug" id="debugPanel">
+<summary>Chi tiết kỹ thuật & debug E-Ra</summary>
+<div class="debug-body">
+<div id="counts" class="debug-info">Chưa có cấu hình</div>
+<p id="mappingWarnings" class="debug-info"></p>
+<h2>Ánh xạ Datastream</h2>
+<p class="debug-info">Tự khớp với tên tiếng Việt từ E-Ra. Chọn thủ công nếu cấu hình thay đổi. Một ID không được phép gán cho hai biến.</p>
+<div class="scroll"><table><thead><tr><th>Biến</th><th>Cấu hình E-Ra</th><th>Giá trị</th><th>Tình trạng</th></tr></thead><tbody id="mappingBody"></tbody></table></div>
+<h2 style="margin-top:20px">Cấu hình nhận được</h2>
+<div class="scroll"><table><thead><tr><th>Tên</th><th>ID</th><th>sensor_id</th><th>chip_id</th><th>Giá trị</th><th>last_updated</th></tr></thead><tbody id="configBody"></tbody></table></div>
+<button id="copyDebug" type="button">Sao chép log debug</button>
+<pre id="log"></pre>
+</div>
+</details>
+<footer>VOX Cool · Kho lạnh 1 · Dữ liệu do E-Ra cung cấp</footer>
 </main>
 <script src="https://www.unpkg.com/@eohjsc/era-widget@1.1.3/src/index.js"></script>
 <script>
-'use strict';
-const STREAMS = [
-  {key:'temp1',title:'Nhiệt độ 1',unit:'°C',type:'number'},
-  {key:'temp2',title:'Nhiệt độ 2',unit:'°C',type:'number'},
-  {key:'temp3',title:'Nhiệt độ 3',unit:'°C',type:'number'},
-  {key:'temp4',title:'Nhiệt độ 4',unit:'°C',type:'number'},
-  {key:'humidity',title:'Độ ẩm',unit:'%',type:'number'},
-  {key:'compressor',title:'Máy nén',type:'switch'},
-  {key:'fan',title:'Quạt',type:'switch'},
-  {key:'defrost',title:'Xả đá',type:'switch'},
-  {key:'door',title:'Cửa',type:'door'},
-  {key:'power_kw',title:'Công suất',unit:'kW',type:'number'},
-  {key:'energy_kwh',title:'Điện năng',unit:'kWh',type:'number'}
+"use strict";
+const STREAMS=[
+ {key:"temp1",name:"Nhiệt độ 1",group:"environment",unit:"°C"},
+ {key:"temp2",name:"Nhiệt độ 2",group:"environment",unit:"°C"},
+ {key:"temp3",name:"Nhiệt độ 3",group:"environment",unit:"°C"},
+ {key:"temp4",name:"Nhiệt độ 4",group:"environment",unit:"°C"},
+ {key:"humidity",name:"Độ ẩm",group:"environment",unit:"%"},
+ {key:"compressor",name:"Máy nén",group:"equipment",type:"switch"},
+ {key:"fan",name:"Quạt",group:"equipment",type:"switch"},
+ {key:"defrost",name:"Xả đá",group:"equipment",type:"switch"},
+ {key:"door",name:"Cửa",group:"equipment",type:"door"},
+ {key:"power_kw",name:"Công suất",group:"electricity",unit:"kW"},
+ {key:"energy_kwh",name:"Điện năng tiêu thụ",group:"electricity",unit:"kWh"}
 ];
-const ERA_NAMES = {
-  temp1:'Nhiệt độ 1',temp2:'Nhiệt độ 2',temp3:'Nhiệt độ 3',temp4:'Nhiệt độ 4',
-  humidity:'Độ ẩm',compressor:'Máy nén',fan:'Quạt',defrost:'Xả đá',
-  door:'Cửa',power_kw:'Công suất',energy_kwh:'Điện năng tiêu thụ'
-};
-const normalizeName = v => String(v ?? '').normalize('NFC').trim().toLocaleLowerCase('vi-VN');
-const $ = id => document.getElementById(id);
-let configs = [], latestValues = {}, mappings = {}, gotValues = false;
-let logEntries = [];
-const stringify = value => {try{return JSON.stringify(value, null, 2)}catch{return String(value)}};
-const safeText = value => value == null ? '—' : String(value);
-function log(kind, data){
-  const entry={at:new Date().toISOString(),kind,data};logEntries.push(entry);if(logEntries.length>80)logEntries.shift();
-  $('log').textContent=logEntries.map(e=>`[${e.at}] ${e.kind}\n${stringify(e.data)}`).join('\n\n');
-  console.log('[E-Ra debug]',kind,data);
+const $=id=>document.getElementById(id);
+const norm=x=>String(x??"").normalize("NFC").trim().toLocaleLowerCase("vi-VN");
+const STALE_MS=5*60*1000;
+let configs=[],values={},mappings={},logs=[],received=false,lastCallback=null;
+function record(kind,data){logs.push({time:new Date().toISOString(),kind,data});if(logs.length>70)logs.shift();$("log").textContent=logs.map(x=>"["+x.time+"] "+x.kind+"\n"+JSON.stringify(x.data,null,2)).join("\n\n");console.log("[E-Ra]",kind,data)}
+function fmtTime(t){const d=new Date(t);return Number.isFinite(d.getTime())?d.toLocaleString("vi-VN"):"Không rõ thời gian"}
+function dataFor(s){const id=mappings[s.key];const o=id==null?null:values[String(id)];const stamp=o&&o.last_updated?Date.parse(o.last_updated):NaN;return {id,raw:o?.value,stamp,stale:Number.isFinite(stamp)&&Date.now()-stamp>STALE_MS}}
+function fmt(s,raw){if(raw===null||raw===undefined||raw==="")return null;if(s.type){const v=Number(raw);if(v!==0&&v!==1)return null;return s.type==="door"?(v===1?"OPEN":"CLOSE"):(v===1?"ON":"OFF")}const n=Number(raw);return Number.isFinite(n)?n.toLocaleString("vi-VN",{maximumFractionDigits:3}):null}
+function card(s){const d=dataFor(s),value=fmt(s,d.raw),item=document.createElement("article");item.className="card"+(d.stale?" stale":"")+(d.id==null?" missing":"");
+ const label=document.createElement("div");label.className="card-label";label.textContent=s.name;
+ const key=document.createElement("div");key.className="key";key.textContent=s.key;
+ const reading=document.createElement("div");reading.className=s.type?"state":"reading";
+ if(s.type){let mark=document.createElement("span");mark.className="light";reading.appendChild(mark);let txt=document.createElement("span");txt.textContent=value??"—";reading.appendChild(txt);if(value!==null)reading.classList.add(value==="ON"||value==="CLOSE"?"on":value==="OPEN"?"open":"off")}
+ else{let number=document.createElement("span");number.textContent=value??"—";reading.appendChild(number);const unit=document.createElement("span");unit.className="unit";unit.textContent=s.unit??"";reading.appendChild(unit)}
+ const meta=document.createElement("div");meta.className="card-meta";meta.textContent=d.id==null?"Chưa ánh xạ":value===null?"Chưa nhận giá trị":d.stale?"Dữ liệu cũ · "+fmtTime(d.stamp):Number.isFinite(d.stamp)?"Cập nhật: "+fmtTime(d.stamp):"Không có thời gian cập nhật";
+ item.append(label,key,reading,meta);return item
 }
-function displayValue(s,raw){
-  if(raw===undefined||raw===null||raw==='')return {text:'—',valid:false};
-  if(s.type==='switch'||s.type==='door'){
-    const n=Number(raw);
-    if(n!==0&&n!==1)return {text:'Không hợp lệ',valid:false};
-    return {text:s.type==='door'?(n===1?'OPEN':'CLOSE'):(n===1?'ON':'OFF'),valid:true};
-  }
-  const n=Number(raw);
-  if(!Number.isFinite(n))return {text:'Không hợp lệ',valid:false};
-  return {text:`${n.toLocaleString('vi-VN',{maximumFractionDigits:3})} ${s.unit||''}`.trim(),valid:true};
+function renderCards(){for(const group of ["environment","equipment","electricity"]){const root=$(group);root.replaceChildren();STREAMS.filter(s=>s.group===group).forEach(s=>root.appendChild(card(s)))}}
+function hero(key,valueId,metaId){const s=STREAMS.find(x=>x.key===key),d=dataFor(s),v=fmt(s,d.raw);$(valueId).textContent=v==null?"—":v+(s.unit?" "+s.unit:"");$(metaId).textContent=d.id==null?"Chưa ánh xạ":v==null?"Chưa có giá trị":d.stale?"Dữ liệu cũ · "+fmtTime(d.stamp):Number.isFinite(d.stamp)?"Cập nhật "+fmtTime(d.stamp):"Không có timestamp"}
+function renderMapping(){const body=$("mappingBody");body.replaceChildren();for(const s of STREAMS){const tr=document.createElement("tr"),td1=document.createElement("td"),td2=document.createElement("td"),td3=document.createElement("td"),td4=document.createElement("td");td1.textContent=s.key;
+ const select=document.createElement("select"),empty=document.createElement("option");empty.value="";empty.textContent="— Chưa chọn —";select.appendChild(empty);
+ for(const c of configs){const option=document.createElement("option");option.value=String(c.id);option.textContent=String(c.name??"?")+" · id="+c.id;select.appendChild(option)}
+ select.value=mappings[s.key]??"";select.addEventListener("change",()=>{const id=select.value;if(id&&Object.entries(mappings).some(([key,existing])=>key!==s.key&&String(existing)===id)){alert("ID này đã được gán cho một biến khác");renderMapping();return}if(id)mappings[s.key]=id;else delete mappings[s.key];record("MAPPING",{key:s.key,id:id||null});render()});
+ td2.appendChild(select);const d=dataFor(s);td3.textContent=d.raw===undefined?"—":String(d.raw);td4.textContent=d.id==null?"Chưa ánh xạ":d.raw===undefined?"Chưa có giá trị":d.stale?"Dữ liệu cũ":"Đã nhận";tr.append(td1,td2,td3,td4);body.appendChild(tr)}
+ const missing=STREAMS.filter(s=>mappings[s.key]==null).map(s=>s.key);$("mappingWarnings").textContent=missing.length?"Chưa ánh xạ: "+missing.join(", "):"Đã ánh xạ đủ 11 biến."
 }
-function readRaw(key){
- const id=mappings[key];if(id==null)return undefined;
- const record=latestValues[String(id)];
- return record && Object.prototype.hasOwnProperty.call(record,'value') ? record.value : undefined;
+function renderConfigs(){const body=$("configBody");body.replaceChildren();for(const c of configs){const tr=document.createElement("tr"),o=values[String(c.id)];for(const v of [c.name,c.id,c.sensor_id,c.chip_id,o?.value,o?.last_updated]){const td=document.createElement("td");td.textContent=v==null?"—":String(v);tr.appendChild(td)}body.appendChild(tr)}$("counts").textContent=configs.length+" cấu hình · "+Object.keys(values).length+" ID dữ liệu · "+Object.keys(mappings).length+"/11 ánh xạ"}
+function renderStatus(){const known=STREAMS.map(s=>({s,d:dataFor(s)})),stale=known.filter(x=>x.d.stale),missing=known.filter(x=>x.d.id==null),empty=known.filter(x=>x.d.id!=null&&x.d.raw===undefined);
+ const warn=$("staleWarning");if(stale.length){warn.textContent="Cảnh báo: "+stale.length+" Datastream có dữ liệu cũ (quá 5 phút). Các giá trị vẫn được hiển thị để đối chiếu, KHÔNG được coi là dữ liệu thời gian thực. Đối chiếu timestamp tại từng thẻ.";warn.classList.remove("hidden")}else warn.classList.add("hidden");
+ const bad=stale.length>0||missing.length>0||empty.length>0,$("connectionText").textContent=received?(bad?"Đã kết nối · Cần kiểm tra":"Đã nhận dữ liệu E-Ra"):"Đang chờ dữ liệu E-Ra…";
+ $("connection").className="chip"+(received?(bad?" bad":" good"):"");
+ $("lastReceive").textContent=lastCallback?"Widget nhận dữ liệu lúc "+fmtTime(lastCallback):"Chưa nhận dữ liệu";
 }
-function renderCards(){
-  const groups=[['Nhiệt độ',STREAMS.slice(0,4)],['Độ ẩm',STREAMS.slice(4,5)],['Trạng thái',STREAMS.slice(5,9)],['Điện năng',STREAMS.slice(9)]];
-  const root=$('cards');root.replaceChildren();
-  for(const [name,items] of groups){
-    const h=document.createElement('h2');h.textContent=name;root.appendChild(h);
-    const grid=document.createElement('div');grid.className='grid';
-    for(const s of items){const card=document.createElement('div');card.className='card';
-      const label=document.createElement('div');label.className='label';label.textContent=s.title;
-      const key=document.createElement('div');key.className='key';key.textContent=s.key;
-      const raw=readRaw(s.key),value=displayValue(s,raw);
-      const v=document.createElement('div');v.className='value '+(value.valid?'ok':'bad');v.textContent=value.text;
-      const detail=document.createElement('div');detail.className='detail';
-      const record=latestValues[String(mappings[s.key])];
-      const updated=record?.last_updated ? Date.parse(record.last_updated) : NaN;
-      const stale=Number.isFinite(updated) && Date.now()-updated>5*60*1000;
-      detail.textContent=mappings[s.key]==null?'Chưa ánh xạ':raw===undefined?'Chưa nhận giá trị':stale?'DỮ LIỆU CŨ · '+new Date(updated).toLocaleString('vi-VN'):'ID E-Ra: '+mappings[s.key];
-      if(stale){v.classList.remove('ok');v.classList.add('bad')}
-      card.append(label,key,v,detail);grid.appendChild(card);
-    }root.appendChild(grid);
-  }
-}
-function renderMapping(){
- const body=$('mapping');body.replaceChildren();
- for(const s of STREAMS){
-  const tr=document.createElement('tr'),a=document.createElement('td');a.textContent=s.key;
-  const b=document.createElement('td'),select=document.createElement('select');select.setAttribute('aria-label','Ánh xạ '+s.key);
-  const empty=document.createElement('option');empty.value='';empty.textContent='— Chưa chọn —';select.appendChild(empty);
-  for(const c of configs){const opt=document.createElement('option');opt.value=String(c.id);opt.textContent=`${safeText(c.name)} | id=${safeText(c.id)} | sensor=${safeText(c.sensor_id)} | chip=${safeText(c.chip_id)}`;select.appendChild(opt)}
-  select.value=mappings[s.key]==null?'':String(mappings[s.key]);
-  select.addEventListener('change',()=>{if(select.value==='')delete mappings[s.key];else mappings[s.key]=select.value;log('MANUAL_MAPPING',{stream:s.key,id:mappings[s.key]??null});renderAll()});b.appendChild(select);
-  const c=document.createElement('td');c.textContent=safeText(readRaw(s.key));
-  const d=document.createElement('td');d.textContent=mappings[s.key]==null?'Chưa ánh xạ':readRaw(s.key)===undefined?'Chưa nhận':'Đã nhận';
-  tr.append(a,b,c,d);body.appendChild(tr);
- }
- const assigned=Object.values(mappings).map(String),dupes=[...new Set(assigned.filter((id,i)=>assigned.indexOf(id)!==i))];
- const missing=STREAMS.filter(s=>mappings[s.key]==null).map(s=>s.key);
- $('warnings').textContent=[missing.length?`${missing.length}/${STREAMS.length} chưa ánh xạ: ${missing.join(', ')}`:'',dupes.length?`CẢNH BÁO: ID trùng cho nhiều Datastream: ${dupes.join(', ')}. Hãy kiểm tra!`:''].filter(Boolean).join(' | ');
-}
-function renderConfigs(){
- const body=$('configs');body.replaceChildren();
- configs.forEach((c,i)=>{const tr=document.createElement('tr');
-  [i,c.name,c.id,c.sensor_id,c.chip_id,latestValues[String(c.id)]?.value].forEach(val=>{const td=document.createElement('td');td.textContent=safeText(val);tr.appendChild(td)});
-  body.appendChild(tr);
- });
- if(!configs.length){const tr=document.createElement('tr');const td=document.createElement('td');td.colSpan=6;td.textContent='E-Ra chưa cung cấp cấu hình realtime';tr.appendChild(td);body.appendChild(tr)}
- $('counts').textContent=`Đã nhận ${configs.length} cấu hình realtime · ${Object.keys(latestValues).length} ID giá trị · ${Object.keys(mappings).length}/${STREAMS.length} ánh xạ`;
-}
-function renderAll(){renderCards();renderMapping();renderConfigs()}
-function processConfiguration(configuration){
-  const incoming=Array.isArray(configuration?.realtime_configs)?configuration.realtime_configs:[];
-  configs=incoming.filter(c=>c && c.id!=null);
-  // Giữ ánh xạ cũ nếu ID còn tồn tại; không đoán theo thứ tự.
-  for(const s of STREAMS){
-    if(mappings[s.key]!=null && !configs.some(c=>String(c.id)===String(mappings[s.key])))delete mappings[s.key];
-    if(mappings[s.key]!=null)continue;
-    const matches=configs.filter(c=>normalizeName(c.name)===normalizeName(ERA_NAMES[s.key]) || normalizeName(c.name)===normalizeName(s.key));
-    if(matches.length===1)mappings[s.key]=String(matches[0].id);
-  }
-  $('connection').textContent=`Đã nhận cấu hình: ${configs.length}/${STREAMS.length}`;
-  log('CONFIGURATION',{realtime_configs:incoming,history_configs_count:configuration?.history_configs?.length??0,actions_count:configuration?.actions?.length??0});
-  console.table(configs.map((c,i)=>({index:i,name:c.name,id:c.id,sensor_id:c.sensor_id,chip_id:c.chip_id,value:latestValues[String(c.id)]?.value??null})));
-  renderAll();
-}
-function processValues(values){
-  if(!values||typeof values!=='object'||Array.isArray(values)){log('INVALID_VALUES',values);return}
-  gotValues=true;latestValues={...latestValues,...values};
-  $('connection').textContent=`Đã nhận dữ liệu · ${new Date().toLocaleTimeString('vi-VN')}`;
-  log('VALUES',values);
-  console.table(configs.map(c=>({name:c.name,id:c.id,sensor_id:c.sensor_id,chip_id:c.chip_id,value:latestValues[String(c.id)]?.value??null})));
-  renderAll();
-}
-$('copy').addEventListener('click',async()=>{
-  const report=stringify({configs,mappings,latestValues,logEntries});
-  try{await navigator.clipboard.writeText(report);$('copy').textContent='Đã copy';}
-  catch{const blob=new Blob([report],{type:'application/json'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='era-debug.json';a.click();URL.revokeObjectURL(url);$('copy').textContent='Đã xuất JSON';}
-});
-renderAll();
-if(typeof EraWidget!=='function'){
-  $('connection').textContent='Không tải được thư viện EraWidget';log('ERROR','Không tải được @eohjsc/era-widget@1.1.3. Kiểm tra mạng/CDN.');
-}else{
- try{
-  const eraWidget=new EraWidget();
-  eraWidget.init({
-   needRealtimeConfigs:true,needHistoryConfigs:false,needActions:false,
-   maxRealtimeConfigsCount:11,minRealtimeConfigsCount:0,
-   maxHistoryConfigsCount:0,minHistoryConfigsCount:0,
-   maxActionsCount:0,minActionsCount:0,
-   onConfiguration:processConfiguration,onValues:processValues
-  });
-  log('INIT','EraWidget.init đã gọi. Đang chờ cấu hình từ E-Ra.');
- }catch(error){$('connection').textContent='Không khởi tạo được EraWidget';log('ERROR',String(error));}
-}
+function render(){renderCards();hero("temp1","heroTemp","heroMeta");hero("compressor","heroCompressor","compressorMeta");hero("door","heroDoor","doorMeta");renderMapping();renderConfigs();renderStatus()}
+function onConfiguration(configuration){configs=(Array.isArray(configuration?.realtime_configs)?configuration.realtime_configs:[]).filter(x=>x?.id!=null);
+ const valid=new Set(configs.map(c=>String(c.id)));for(const key of Object.keys(mappings))if(!valid.has(String(mappings[key])))delete mappings[key];
+ for(const s of STREAMS){if(mappings[s.key]!=null)continue;const matches=configs.filter(c=>norm(c.name)===norm(s.name)||norm(c.name)===norm(s.key));if(matches.length===1&&!Object.values(mappings).includes(String(matches[0].id)))mappings[s.key]=String(matches[0].id)}
+ record("CONFIGURATION",configuration);render()}
+function onValues(input){if(!input||typeof input!=="object"||Array.isArray(input)){record("INVALID_VALUES",input);return}values={...values,...input};received=true;lastCallback=Date.now();record("VALUES",input);render()}
+$("copyDebug").addEventListener("click",async()=>{const report=JSON.stringify({configs,mappings,values,logs},null,2);try{await navigator.clipboard.writeText(report);$("copyDebug").textContent="Đã sao chép"}catch{const blob=new Blob([report],{type:"application/json"}),url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download="era-debug.json";a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);$("copyDebug").textContent="Đã xuất JSON"}});
+render();
+if(typeof EraWidget!=="function"){record("ERROR","Không tải được thư viện EraWidget");$("connectionText").textContent="Không tải được EraWidget";$("connection").className="chip bad"}
+else{try{const widget=new EraWidget();widget.init({needRealtimeConfigs:true,needHistoryConfigs:false,needActions:false,maxRealtimeConfigsCount:11,minRealtimeConfigsCount:0,maxHistoryConfigsCount:0,minHistoryConfigsCount:0,maxActionsCount:0,minActionsCount:0,onConfiguration,onValues});record("INIT","Đang chờ dữ liệu từ iFrame With Config của E-Ra")}catch(e){record("ERROR",String(e));$("connectionText").textContent="Không khởi tạo được EraWidget";$("connection").className="chip bad"}}
+setInterval(()=>{if(received)renderStatus();},30000);
 </script>
-</body>
-</html>
+</body></html>
