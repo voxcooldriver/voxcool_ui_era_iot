@@ -133,7 +133,8 @@ function renderMapping(){const body=$("mappingBody");body.replaceChildren();for(
 function renderConfigs(){const body=$("configBody");body.replaceChildren();for(const c of configs){const tr=document.createElement("tr"),o=values[String(c.id)];for(const v of [c.name,c.id,c.sensor_id,c.chip_id,o?.value,o?.last_updated]){const td=document.createElement("td");td.textContent=v==null?"—":String(v);tr.appendChild(td)}body.appendChild(tr)}$("counts").textContent=configs.length+" cấu hình · "+Object.keys(values).length+" ID dữ liệu · "+Object.keys(mappings).length+"/11 ánh xạ"}
 function renderStatus(){const known=STREAMS.map(s=>({s,d:dataFor(s)})),stale=known.filter(x=>x.d.stale),missing=known.filter(x=>x.d.id==null),empty=known.filter(x=>x.d.id!=null&&x.d.raw===undefined);
  const warn=$("staleWarning");if(stale.length){warn.textContent="Cảnh báo: "+stale.length+" Datastream có dữ liệu cũ (quá 5 phút). Các giá trị vẫn được hiển thị để đối chiếu, KHÔNG được coi là dữ liệu thời gian thực. Đối chiếu timestamp tại từng thẻ.";warn.classList.remove("hidden")}else warn.classList.add("hidden");
- const bad=stale.length>0||missing.length>0||empty.length>0,$("connectionText").textContent=received?(bad?"Đã kết nối · Cần kiểm tra":"Đã nhận dữ liệu E-Ra"):"Đang chờ dữ liệu E-Ra…";
+ const bad=stale.length>0||missing.length>0||empty.length>0;
+ $("connectionText").textContent=received?(bad?"Đã kết nối · Cần kiểm tra":"Đã nhận dữ liệu E-Ra"):"Đang chờ dữ liệu E-Ra…";
  $("connection").className="chip"+(received?(bad?" bad":" good"):"");
  $("lastReceive").textContent=lastCallback?"Widget nhận dữ liệu lúc "+fmtTime(lastCallback):"Chưa nhận dữ liệu";
 }
