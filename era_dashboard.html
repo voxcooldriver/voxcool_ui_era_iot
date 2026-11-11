@@ -27,7 +27,6 @@ const STREAMS = [
   {key:'temp2',title:'Nhiệt độ 2',unit:'°C',type:'number'},
   {key:'temp3',title:'Nhiệt độ 3',unit:'°C',type:'number'},
   {key:'temp4',title:'Nhiệt độ 4',unit:'°C',type:'number'},
-  {key:'temp5',title:'Nhiệt độ 5',unit:'°C',type:'number'},
   {key:'humidity',title:'Độ ẩm',unit:'%',type:'number'},
   {key:'compressor',title:'Máy nén',type:'switch'},
   {key:'fan',title:'Quạt',type:'switch'},
@@ -36,6 +35,12 @@ const STREAMS = [
   {key:'power_kw',title:'Công suất',unit:'kW',type:'number'},
   {key:'energy_kwh',title:'Điện năng',unit:'kWh',type:'number'}
 ];
+const ERA_NAMES = {
+  temp1:'Nhiệt độ 1',temp2:'Nhiệt độ 2',temp3:'Nhiệt độ 3',temp4:'Nhiệt độ 4',
+  humidity:'Độ ẩm',compressor:'Máy nén',fan:'Quạt',defrost:'Xả đá',
+  door:'Cửa',power_kw:'Công suất',energy_kwh:'Điện năng tiêu thụ'
+};
+const normalizeName = v => String(v ?? '').normalize('NFC').trim().toLocaleLowerCase('vi-VN');
 const $ = id => document.getElementById(id);
 let configs = [], latestValues = {}, mappings = {}, gotValues = false;
 let logEntries = [];
@@ -63,7 +68,7 @@ function readRaw(key){
  return record && Object.prototype.hasOwnProperty.call(record,'value') ? record.value : undefined;
 }
 function renderCards(){
-  const groups=[['Nhiệt độ',STREAMS.slice(0,5)],['Độ ẩm',STREAMS.slice(5,6)],['Trạng thái',STREAMS.slice(6,10)],['Điện năng',STREAMS.slice(10)]];
+  const groups=[['Nhiệt độ',STREAMS.slice(0,4)],['Độ ẩm',STREAMS.slice(4,5)],['Trạng thái',STREAMS.slice(5,9)],['Điện năng',STREAMS.slice(9)]];
   const root=$('cards');root.replaceChildren();
   for(const [name,items] of groups){
     const h=document.createElement('h2');h.textContent=name;root.appendChild(h);
@@ -73,7 +78,12 @@ function renderCards(){
       const key=document.createElement('div');key.className='key';key.textContent=s.key;
       const raw=readRaw(s.key),value=displayValue(s,raw);
       const v=document.createElement('div');v.className='value '+(value.valid?'ok':'bad');v.textContent=value.text;
-      const detail=document.createElement('div');detail.className='detail';detail.textContent=mappings[s.key]==null?'Chưa ánh xạ':raw===undefined?'Chưa nhận giá trị':'ID E-Ra: '+mappings[s.key];
+      const detail=document.createElement('div');detail.className='detail';
+      const record=latestValues[String(mappings[s.key])];
+      const updated=record?.last_updated ? Date.parse(record.last_updated) : NaN;
+      const stale=Number.isFinite(updated) && Date.now()-updated>5*60*1000;
+      detail.textContent=mappings[s.key]==null?'Chưa ánh xạ':raw===undefined?'Chưa nhận giá trị':stale?'DỮ LIỆU CŨ · '+new Date(updated).toLocaleString('vi-VN'):'ID E-Ra: '+mappings[s.key];
+      if(stale){v.classList.remove('ok');v.classList.add('bad')}
       card.append(label,key,v,detail);grid.appendChild(card);
     }root.appendChild(grid);
   }
@@ -93,7 +103,7 @@ function renderMapping(){
  }
  const assigned=Object.values(mappings).map(String),dupes=[...new Set(assigned.filter((id,i)=>assigned.indexOf(id)!==i))];
  const missing=STREAMS.filter(s=>mappings[s.key]==null).map(s=>s.key);
- $('warnings').textContent=[missing.length?`${missing.length}/12 chưa ánh xạ: ${missing.join(', ')}`:'',dupes.length?`CẢNH BÁO: ID trùng cho nhiều Datastream: ${dupes.join(', ')}. Hãy kiểm tra!`:''].filter(Boolean).join(' | ');
+ $('warnings').textContent=[missing.length?`${missing.length}/${STREAMS.length} chưa ánh xạ: ${missing.join(', ')}`:'',dupes.length?`CẢNH BÁO: ID trùng cho nhiều Datastream: ${dupes.join(', ')}. Hãy kiểm tra!`:''].filter(Boolean).join(' | ');
 }
 function renderConfigs(){
  const body=$('configs');body.replaceChildren();
@@ -102,7 +112,7 @@ function renderConfigs(){
   body.appendChild(tr);
  });
  if(!configs.length){const tr=document.createElement('tr');const td=document.createElement('td');td.colSpan=6;td.textContent='E-Ra chưa cung cấp cấu hình realtime';tr.appendChild(td);body.appendChild(tr)}
- $('counts').textContent=`Đã nhận ${configs.length} cấu hình realtime · ${Object.keys(latestValues).length} ID giá trị · ${Object.keys(mappings).length}/12 ánh xạ`;
+ $('counts').textContent=`Đã nhận ${configs.length} cấu hình realtime · ${Object.keys(latestValues).length} ID giá trị · ${Object.keys(mappings).length}/${STREAMS.length} ánh xạ`;
 }
 function renderAll(){renderCards();renderMapping();renderConfigs()}
 function processConfiguration(configuration){
@@ -112,10 +122,10 @@ function processConfiguration(configuration){
   for(const s of STREAMS){
     if(mappings[s.key]!=null && !configs.some(c=>String(c.id)===String(mappings[s.key])))delete mappings[s.key];
     if(mappings[s.key]!=null)continue;
-    const matches=configs.filter(c=>String(c.name??'').trim().toLowerCase()===s.key);
+    const matches=configs.filter(c=>normalizeName(c.name)===normalizeName(ERA_NAMES[s.key]) || normalizeName(c.name)===normalizeName(s.key));
     if(matches.length===1)mappings[s.key]=String(matches[0].id);
   }
-  $('connection').textContent=`Đã nhận cấu hình: ${configs.length}/12`;
+  $('connection').textContent=`Đã nhận cấu hình: ${configs.length}/${STREAMS.length}`;
   log('CONFIGURATION',{realtime_configs:incoming,history_configs_count:configuration?.history_configs?.length??0,actions_count:configuration?.actions?.length??0});
   console.table(configs.map((c,i)=>({index:i,name:c.name,id:c.id,sensor_id:c.sensor_id,chip_id:c.chip_id,value:latestValues[String(c.id)]?.value??null})));
   renderAll();
@@ -141,7 +151,7 @@ if(typeof EraWidget!=='function'){
   const eraWidget=new EraWidget();
   eraWidget.init({
    needRealtimeConfigs:true,needHistoryConfigs:false,needActions:false,
-   maxRealtimeConfigsCount:12,minRealtimeConfigsCount:0,
+   maxRealtimeConfigsCount:11,minRealtimeConfigsCount:0,
    maxHistoryConfigsCount:0,minHistoryConfigsCount:0,
    maxActionsCount:0,minActionsCount:0,
    onConfiguration:processConfiguration,onValues:processValues
