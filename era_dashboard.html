@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>E-Ra | Kiểm tra 12 Datastreams — Kho lạnh 1</title>
+<style>
+:root{font-family:system-ui,-apple-system,'Segoe UI',sans-serif;color:#18253b;background:#f4f7fb}*{box-sizing:border-box}body{margin:0}main{max-width:1250px;margin:auto;padding:24px 18px 60px}header{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:20px}h1{font-size:24px;margin:0}h2{font-size:17px;margin:24px 0 12px}p{line-height:1.5}small,.muted{color:#64748b}.status{border:1px solid #cbd5e1;border-radius:40px;padding:8px 12px;background:white;font-size:13px}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(195px,1fr));gap:12px}.card,.panel{border:1px solid #e2e8f0;background:#fff;border-radius:12px;padding:16px;box-shadow:0 2px 7px #15234208}.card .label{font-weight:600;font-size:14px}.card .key{font:12px ui-monospace,Consolas,monospace;color:#64748b;margin-top:5px}.card .value{font-size:27px;font-weight:750;margin-top:14px;overflow-wrap:anywhere}.card .detail{font-size:12px;color:#64748b;margin-top:7px}.card .ok{color:#127847}.card .bad{color:#ad3030}.note{padding:12px 15px;background:#eaf2ff;border-radius:9px;color:#26456f;font-size:14px}.table-wrap{overflow-x:auto}table{width:100%;border-collapse:collapse;font-size:13px}th,td{text-align:left;padding:10px 9px;border-bottom:1px solid #e2e8f0;white-space:nowrap}th{background:#f8fafc}select{padding:7px;max-width:240px;width:100%;background:#fff;border:1px solid #cbd5e1;border-radius:7px}button{border:1px solid #cbd5e1;background:white;color:#1e293b;border-radius:8px;padding:8px 12px;cursor:pointer}button:hover{background:#f1f5f9}pre{background:#0f172a;color:#d3e5f7;padding:14px;overflow:auto;border-radius:10px;font-size:12px;max-height:260px}.toolbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:space-between}.alert{color:#a62424;font-size:14px}code{font-family:ui-monospace,Consolas,monospace}
+</style>
+</head>
+<body>
+<main>
+<header><div><h1>Kho lạnh 1 · Kiểm tra dữ liệu E-Ra</h1><small>12 Datastreams · Chỉ đọc · Không gửi lệnh điều khiển</small></div><span class="status" id="connection">Đang chờ cấu hình E-Ra…</span></header>
+<p class="note">Widget chỉ nhận các Datastream được gán cho <b>chính widget tùy chỉnh này</b>. 12 widget mặc định đã tồn tại trên Dashboard E-Ra không đồng nghĩa cấu hình này tự được truyền sang widget mới. Mở trang trong E-Ra để thử kết nối.</p>
+<section id="cards"></section>
+<h2>Ánh xạ Datastream ↔ Cấu hình E-Ra</h2>
+<div class="panel"><p class="muted">Nếu E-Ra trả về tên cấu hình trùng chính xác Datastream, trang sẽ tự ghép. Nếu không, hãy chọn thủ công từng dòng theo <code>name / id / sensor_id / chip_id</code> được E-Ra cung cấp. Không tự suy đoán theo vị trí mảng.</p><div class="table-wrap"><table><thead><tr><th>Datastream</th><th>Cấu hình được chọn</th><th>Giá trị raw</th><th>Tình trạng</th></tr></thead><tbody id="mapping"></tbody></table></div><p id="warnings" class="alert" role="status"></p></div>
+<h2>Các cấu hình mà E-Ra thực sự trả về</h2>
+<div class="panel"><div class="toolbar"><span class="muted" id="counts">Chưa nhận cấu hình</span><button id="copy" type="button">Copy log debug</button></div><div class="table-wrap"><table><thead><tr><th>Vị trí</th><th>name</th><th>id</th><th>sensor_id</th><th>chip_id</th><th>Giá trị</th></tr></thead><tbody id="configs"><tr><td colspan="6">Đang chờ E-Ra…</td></tr></tbody></table></div></div>
+<h2>Log debug (giữ tối đa 80 sự kiện)</h2><pre id="log" aria-live="off"></pre>
+</main>
+<script src="https://www.unpkg.com/@eohjsc/era-widget@1.1.3/src/index.js"></script>
+<script>
+'use strict';
+const STREAMS = [
+  {key:'temp1',title:'Nhiệt độ 1',unit:'°C',type:'number'},
+  {key:'temp2',title:'Nhiệt độ 2',unit:'°C',type:'number'},
+  {key:'temp3',title:'Nhiệt độ 3',unit:'°C',type:'number'},
+  {key:'temp4',title:'Nhiệt độ 4',unit:'°C',type:'number'},
+  {key:'temp5',title:'Nhiệt độ 5',unit:'°C',type:'number'},
+  {key:'humidity',title:'Độ ẩm',unit:'%',type:'number'},
+  {key:'compressor',title:'Máy nén',type:'switch'},
+  {key:'fan',title:'Quạt',type:'switch'},
+  {key:'defrost',title:'Xả đá',type:'switch'},
+  {key:'door',title:'Cửa',type:'door'},
+  {key:'power_kw',title:'Công suất',unit:'kW',type:'number'},
+  {key:'energy_kwh',title:'Điện năng',unit:'kWh',type:'number'}
+];
+const $ = id => document.getElementById(id);
+let configs = [], latestValues = {}, mappings = {}, gotValues = false;
+let logEntries = [];
+const stringify = value => {try{return JSON.stringify(value, null, 2)}catch{return String(value)}};
+const safeText = value => value == null ? '—' : String(value);
+function log(kind, data){
+  const entry={at:new Date().toISOString(),kind,data};logEntries.push(entry);if(logEntries.length>80)logEntries.shift();
+  $('log').textContent=logEntries.map(e=>`[${e.at}] ${e.kind}\n${stringify(e.data)}`).join('\n\n');
+  console.log('[E-Ra debug]',kind,data);
+}
+function displayValue(s,raw){
+  if(raw===undefined||raw===null||raw==='')return {text:'—',valid:false};
+  if(s.type==='switch'||s.type==='door'){
+    const n=Number(raw);
+    if(n!==0&&n!==1)return {text:'Không hợp lệ',valid:false};
+    return {text:s.type==='door'?(n===1?'OPEN':'CLOSE'):(n===1?'ON':'OFF'),valid:true};
+  }
+  const n=Number(raw);
+  if(!Number.isFinite(n))return {text:'Không hợp lệ',valid:false};
+  return {text:`${n.toLocaleString('vi-VN',{maximumFractionDigits:3})} ${s.unit||''}`.trim(),valid:true};
+}
+function readRaw(key){
+ const id=mappings[key];if(id==null)return undefined;
+ const record=latestValues[String(id)];
+ return record && Object.prototype.hasOwnProperty.call(record,'value') ? record.value : undefined;
+}
+function renderCards(){
+  const groups=[['Nhiệt độ',STREAMS.slice(0,5)],['Độ ẩm',STREAMS.slice(5,6)],['Trạng thái',STREAMS.slice(6,10)],['Điện năng',STREAMS.slice(10)]];
+  const root=$('cards');root.replaceChildren();
+  for(const [name,items] of groups){
+    const h=document.createElement('h2');h.textContent=name;root.appendChild(h);
+    const grid=document.createElement('div');grid.className='grid';
+    for(const s of items){const card=document.createElement('div');card.className='card';
+      const label=document.createElement('div');label.className='label';label.textContent=s.title;
+      const key=document.createElement('div');key.className='key';key.textContent=s.key;
+      const raw=readRaw(s.key),value=displayValue(s,raw);
+      const v=document.createElement('div');v.className='value '+(value.valid?'ok':'bad');v.textContent=value.text;
+      const detail=document.createElement('div');detail.className='detail';detail.textContent=mappings[s.key]==null?'Chưa ánh xạ':raw===undefined?'Chưa nhận giá trị':'ID E-Ra: '+mappings[s.key];
+      card.append(label,key,v,detail);grid.appendChild(card);
+    }root.appendChild(grid);
+  }
+}
+function renderMapping(){
+ const body=$('mapping');body.replaceChildren();
+ for(const s of STREAMS){
+  const tr=document.createElement('tr'),a=document.createElement('td');a.textContent=s.key;
+  const b=document.createElement('td'),select=document.createElement('select');select.setAttribute('aria-label','Ánh xạ '+s.key);
+  const empty=document.createElement('option');empty.value='';empty.textContent='— Chưa chọn —';select.appendChild(empty);
+  for(const c of configs){const opt=document.createElement('option');opt.value=String(c.id);opt.textContent=`${safeText(c.name)} | id=${safeText(c.id)} | sensor=${safeText(c.sensor_id)} | chip=${safeText(c.chip_id)}`;select.appendChild(opt)}
+  select.value=mappings[s.key]==null?'':String(mappings[s.key]);
+  select.addEventListener('change',()=>{if(select.value==='')delete mappings[s.key];else mappings[s.key]=select.value;log('MANUAL_MAPPING',{stream:s.key,id:mappings[s.key]??null});renderAll()});b.appendChild(select);
+  const c=document.createElement('td');c.textContent=safeText(readRaw(s.key));
+  const d=document.createElement('td');d.textContent=mappings[s.key]==null?'Chưa ánh xạ':readRaw(s.key)===undefined?'Chưa nhận':'Đã nhận';
+  tr.append(a,b,c,d);body.appendChild(tr);
+ }
+ const assigned=Object.values(mappings).map(String),dupes=[...new Set(assigned.filter((id,i)=>assigned.indexOf(id)!==i))];
+ const missing=STREAMS.filter(s=>mappings[s.key]==null).map(s=>s.key);
+ $('warnings').textContent=[missing.length?`${missing.length}/12 chưa ánh xạ: ${missing.join(', ')}`:'',dupes.length?`CẢNH BÁO: ID trùng cho nhiều Datastream: ${dupes.join(', ')}. Hãy kiểm tra!`:''].filter(Boolean).join(' | ');
+}
+function renderConfigs(){
+ const body=$('configs');body.replaceChildren();
+ configs.forEach((c,i)=>{const tr=document.createElement('tr');
+  [i,c.name,c.id,c.sensor_id,c.chip_id,latestValues[String(c.id)]?.value].forEach(val=>{const td=document.createElement('td');td.textContent=safeText(val);tr.appendChild(td)});
+  body.appendChild(tr);
+ });
+ if(!configs.length){const tr=document.createElement('tr');const td=document.createElement('td');td.colSpan=6;td.textContent='E-Ra chưa cung cấp cấu hình realtime';tr.appendChild(td);body.appendChild(tr)}
+ $('counts').textContent=`Đã nhận ${configs.length} cấu hình realtime · ${Object.keys(latestValues).length} ID giá trị · ${Object.keys(mappings).length}/12 ánh xạ`;
+}
+function renderAll(){renderCards();renderMapping();renderConfigs()}
+function processConfiguration(configuration){
+  const incoming=Array.isArray(configuration?.realtime_configs)?configuration.realtime_configs:[];
+  configs=incoming.filter(c=>c && c.id!=null);
+  // Giữ ánh xạ cũ nếu ID còn tồn tại; không đoán theo thứ tự.
+  for(const s of STREAMS){
+    if(mappings[s.key]!=null && !configs.some(c=>String(c.id)===String(mappings[s.key])))delete mappings[s.key];
+    if(mappings[s.key]!=null)continue;
+    const matches=configs.filter(c=>String(c.name??'').trim().toLowerCase()===s.key);
+    if(matches.length===1)mappings[s.key]=String(matches[0].id);
+  }
+  $('connection').textContent=`Đã nhận cấu hình: ${configs.length}/12`;
+  log('CONFIGURATION',{realtime_configs:incoming,history_configs_count:configuration?.history_configs?.length??0,actions_count:configuration?.actions?.length??0});
+  console.table(configs.map((c,i)=>({index:i,name:c.name,id:c.id,sensor_id:c.sensor_id,chip_id:c.chip_id,value:latestValues[String(c.id)]?.value??null})));
+  renderAll();
+}
+function processValues(values){
+  if(!values||typeof values!=='object'||Array.isArray(values)){log('INVALID_VALUES',values);return}
+  gotValues=true;latestValues={...latestValues,...values};
+  $('connection').textContent=`Đã nhận dữ liệu · ${new Date().toLocaleTimeString('vi-VN')}`;
+  log('VALUES',values);
+  console.table(configs.map(c=>({name:c.name,id:c.id,sensor_id:c.sensor_id,chip_id:c.chip_id,value:latestValues[String(c.id)]?.value??null})));
+  renderAll();
+}
+$('copy').addEventListener('click',async()=>{
+  const report=stringify({configs,mappings,latestValues,logEntries});
+  try{await navigator.clipboard.writeText(report);$('copy').textContent='Đã copy';}
+  catch{const blob=new Blob([report],{type:'application/json'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='era-debug.json';a.click();URL.revokeObjectURL(url);$('copy').textContent='Đã xuất JSON';}
+});
+renderAll();
+if(typeof EraWidget!=='function'){
+  $('connection').textContent='Không tải được thư viện EraWidget';log('ERROR','Không tải được @eohjsc/era-widget@1.1.3. Kiểm tra mạng/CDN.');
+}else{
+ try{
+  const eraWidget=new EraWidget();
+  eraWidget.init({
+   needRealtimeConfigs:true,needHistoryConfigs:false,needActions:false,
+   maxRealtimeConfigsCount:12,minRealtimeConfigsCount:0,
+   maxHistoryConfigsCount:0,minHistoryConfigsCount:0,
+   maxActionsCount:0,minActionsCount:0,
+   onConfiguration:processConfiguration,onValues:processValues
+  });
+  log('INIT','EraWidget.init đã gọi. Đang chờ cấu hình từ E-Ra.');
+ }catch(error){$('connection').textContent='Không khởi tạo được EraWidget';log('ERROR',String(error));}
+}
+</script>
+</body>
+</html>
