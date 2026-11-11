@@ -86,7 +86,6 @@ h1{margin:0;font-size:clamp(23px,2.4vw,34px);letter-spacing:-.035em}p{margin:0}.
  </div>
  <div class="status-area">
   <span id="connection" class="connected wait"><svg class="symbol" style="width:17px;height:17px"><use href="#wifi"/></svg><span id="connectionText">Đang chờ E-Ra</span></span>
-  <span class="updated"><svg class="symbol" style="width:17px;height:17px"><use href="#clock"/></svg><span id="lastReceive">Chưa nhận dữ liệu</span></span>
  </div>
 </header>
 <section class="metric-row" aria-label="Chỉ số chính">
@@ -204,7 +203,6 @@ function renderTime(){
  $("dataTime").textContent=timeText(t);
  const d=$("dataAge");d.textContent=Number.isFinite(t)?ageText(Date.now()-t):"Chưa có dữ liệu";d.classList.toggle("age",Number.isFinite(t)&&Date.now()-t>STALE);
  $("receiveTime").textContent=timeText(lastReceive??NaN);
- $("lastReceive").textContent=lastReceive?"Nhận: "+timeText(lastReceive):"Chưa nhận dữ liệu";
  const status=$("connection"),text=$("connectionText");
  if(gotValues||Object.keys(historyValues).length){status.className="connected";text.textContent="Đã nhận dữ liệu E-Ra"}
  else if(configs.length){status.className="connected wait";text.textContent="Đang chờ dữ liệu"}
