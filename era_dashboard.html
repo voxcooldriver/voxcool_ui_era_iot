@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#ffffff">
-<title>Kho lạnh 1 · VOX Cool</title>
+<title>VOX Cool Dashboard</title>
 <style>
 :root{--navy:#080e80;--blue:#0788f7;--line:#bdd5fd;--mint:#08ad57;--light:#f4f9ff;--muted:#637598;--red:#d62838;font-family:Inter,system-ui,-apple-system,"Segoe UI",Arial,sans-serif;color:var(--navy);background:#eff6ff}
 *{box-sizing:border-box}html{scroll-behavior:smooth}html.era-mobile-fit,html.era-mobile-fit body{overflow-y:hidden;overscroll-behavior-y:none}body{margin:0;min-width:280px;background:linear-gradient(145deg,#fafdff 0%,#f2f8ff 60%,#e8f3ff 100%);color:var(--navy)}
@@ -12,7 +12,7 @@
 .header{display:flex;gap:18px;align-items:center;justify-content:space-between;margin-bottom:21px}
 .identity{display:flex;align-items:center;gap:18px;min-width:0}.brand-logo{width:235px;height:auto;object-fit:contain;flex:none}.vertical{width:1px;height:60px;background:#a6bbe3;flex:none}
 .room-title{display:flex;align-items:center;gap:10px;min-width:0}.room-title .symbol{width:39px;height:39px;color:var(--blue);flex:none}
-h1{margin:0;font-size:clamp(23px,2.4vw,34px);letter-spacing:-.035em}p{margin:0}.subtitle{margin-top:5px;font-size:13px;color:#1c2d61;line-height:1.4}
+p{margin:0}.subtitle{margin-top:0;font-size:13px;color:#1c2d61;line-height:1.4}
 .status-area{display:flex;align-items:center;gap:12px;flex-wrap:wrap;justify-content:flex-end}.connected{display:inline-flex;gap:6px;align-items:center;border:1px solid #bcf2cd;background:#e1fce9;border-radius:13px;color:#09733d;font-size:12px;font-weight:750;padding:10px 12px;white-space:nowrap}
 .connected.wait{background:#eff4ff;color:#56678e;border-color:#d3dffa}.connected.error{background:#fff0f1;color:#b32937;border-color:#ffcbce}
 .updated{display:flex;align-items:center;gap:6px;border-left:1px solid #b6c9e7;padding-left:13px;font-size:12px;white-space:nowrap}
@@ -45,7 +45,7 @@ h1{margin:0;font-size:clamp(23px,2.4vw,34px);letter-spacing:-.035em}p{margin:0}.
 .device{background:linear-gradient(145deg,#fff,#e1f0ff);border:1px solid #b8d3fc;border-radius:14px;padding:12px 9px 13px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px;min-width:0;text-align:center}
 .device .symbol{width:33px;height:33px;color:#067fec}.device .device-label{font-size:13px;font-weight:750;word-break:break-word;line-height:1.3}
 .state-pill{min-width:84%;border-radius:12px;padding:7px 10px;color:#fff;font-weight:850;font-size:15px;line-height:1;background:#7498c7}
-.state-pill.on{background:linear-gradient(180deg,#03b658,#008b3a)}.state-pill.open{background:linear-gradient(180deg,#ffa500,#df7500)}.state-pill.off{background:linear-gradient(180deg,#92afd7,#6b8eba)}
+.state-pill.on{background:linear-gradient(180deg,#03b658,#008b3a)}.state-pill.open{background:linear-gradient(180deg,#ffa500,#df7500)}.state-pill.off{background:linear-gradient(180deg,#92afd7,#6b8eba)}.state-pill.unknown{background:#edf2f9;color:#6e7e97;border:1px solid #cdd8e8}
 .info-rows{display:grid;gap:0;margin-top:-6px}.info-row{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 8px;border-bottom:1px solid #dfe8f8;font-size:13px}
 .info-row:last-child{border:0}.info-name{display:flex;align-items:center;gap:8px}.info-name .symbol{width:19px;height:19px}
 .info-value{background:#e9f2ff;border:1px solid #d6e5fc;border-radius:9px;padding:7px 10px;font-weight:700;text-align:right;font-variant-numeric:tabular-nums}
@@ -82,7 +82,7 @@ h1{margin:0;font-size:clamp(23px,2.4vw,34px);letter-spacing:-.035em}p{margin:0}.
  <div class="identity">
   <img class="brand-logo" id="brandLogo" alt="VOX Cool – Innovative Cooling Solutions" width="320" height="87">
   <div class="vertical"></div>
-  <div class="room-title"><svg class="symbol"><use href="#snow"/></svg><div><h1>Kho lạnh 1</h1><div class="subtitle">Giám sát nhiệt độ, độ ẩm và trạng thái thiết bị</div></div></div>
+  <div class="room-title"><svg class="symbol"><use href="#snow"/></svg><div class="subtitle">Giám sát nhiệt độ, độ ẩm và trạng thái thiết bị</div></div>
  </div>
  <div class="status-area">
   <span id="connection" class="connected wait"><svg class="symbol" style="width:17px;height:17px"><use href="#wifi"/></svg><span id="connectionText">Đang chờ E-Ra</span></span>
@@ -120,7 +120,7 @@ h1{margin:0;font-size:clamp(23px,2.4vw,34px);letter-spacing:-.035em}p{margin:0}.
 </div>
 <details class="debug" hidden aria-hidden="true"><summary>Chi tiết kỹ thuật · E-Ra Debug</summary>
  <div class="debug-inner"><div id="debugCounts" class="status-note"></div>
-  <div style="overflow:auto"><table><thead><tr><th>Datastream</th><th>ID cố định</th><th>Tên từ E-Ra</th><th>Giá trị</th><th>last_updated</th></tr></thead><tbody id="debugRows"></tbody></table></div>
+  <div style="overflow:auto"><table><thead><tr><th>Datastream</th><th>ID Realtime</th><th>ID History</th><th>Giá trị</th><th>last_updated</th></tr></thead><tbody id="debugRows"></tbody></table></div>
   <button type="button" id="copyDebug">Sao chép / tải JSON debug</button><pre id="debugLog"></pre>
  </div>
 </details>
@@ -129,12 +129,7 @@ h1{margin:0;font-size:clamp(23px,2.4vw,34px);letter-spacing:-.035em}p{margin:0}.
 <script src="https://www.unpkg.com/@eohjsc/era-widget@1.1.3/src/index.js"></script>
 <script>
 "use strict";
-/* ID lấy từ E-Ra, không thay đổi khi đổi tên Datastream. Chỉ đổi ID khi thay cảm biến/Datastream. */
-const DATASTREAM_IDS=Object.freeze({
- temp1:193613,temp2:193614,temp3:193615,temp4:193616,
- humidity:193618,door:193619,compressor:193620,
- defrost:193621,fan:193622,energy_kwh:193623,power_kw:193624
-});
+/* Tên Datastream là khóa kỹ thuật; E-Ra cấp ID theo từng widget/thiết bị. */
 const DEFS=[
  {key:"temp1",fallback:"Nhiệt độ 1",unit:"°C"},
  {key:"temp2",fallback:"Nhiệt độ 2",unit:"°C"},
@@ -152,33 +147,55 @@ const $=id=>document.getElementById(id);
 const DAY=86400000,STALE=5*60000;
 const CHART_COLORS=["#058bf5","#09ba62","#ffae00","#9958f4"];
 let configs=[],historyConfigs=[],values={},histories=[],historyValues={},logs=[],widget=null,gotValues=false,lastReceive=null,lastHeight=0,mobileResizeTimer=null,mobileObserver=null,mobileAttempts=0;
-let requestedWindow=null,requestedAnchor=null,historyRequestCount=0;
-const NAMES=new Map(),ACCEPTED=new Set(),HISTORY_IDS=new Set();
+let requestedWindow=null,requestedAnchor=null,historyRequestCount=0,configurationSignature=null,configurationEpoch=0;
+const REALTIME_IDS=new Map(),HISTORY_IDS_BY_NAME=new Map(),ACCEPTED=new Set(),HISTORY_IDS=new Set();
+let configurationErrors=[];
 $("brandLogo").src="data:image/webp;base64,"+"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";
 function log(kind,data){logs.push({at:new Date().toISOString(),kind,data});if(logs.length>24)logs.shift();$("debugLog").textContent=logs.map(x=>x.at+" "+x.kind+" "+JSON.stringify(x.data)).join("\n");}
-function displayName(key){return NAMES.get(key)||DEFS.find(s=>s.key===key)?.fallback||key}
-function idOf(key){return String(DATASTREAM_IDS[key])}
+function displayName(key){return DEFS.find(s=>s.key===key)?.fallback||key}
 function item(key){
- const id=idOf(key);
- const current=ACCEPTED.has(id)?values[id]:null;
- const historical=HISTORY_IDS.has(id)?historyValues[id]:null;
- const o=current&&current.value!=null?current:historical;
- const t=o?.last_updated?Date.parse(o.last_updated):NaN;
- return{raw:o?.value,t,stale:Number.isFinite(t)&&Date.now()-t>STALE,id,valid:ACCEPTED.has(id)||HISTORY_IDS.has(id),source:o===historical?"history":"realtime"};
+ const id=REALTIME_IDS.get(key);
+ const o=id===undefined?null:values[id];
+ const t=parseHistoryTime(o?.last_updated);
+ return{raw:o?.value,t,stale:Number.isFinite(t)&&Date.now()-t>STALE,id:id??null,valid:id!==undefined,source:"realtime"};
 }
-function number(raw){if(raw==null||raw==="")return null;const n=Number(raw);return Number.isFinite(n)?n:null}
-function numText(raw,digits){const n=number(raw);return n===null?"—":n.toLocaleString("vi-VN",{minimumFractionDigits:digits??0,maximumFractionDigits:digits??1})}
+function chartHistoryConfigured(){return DEFS.slice(0,4).some(d=>HISTORY_IDS_BY_NAME.has(d.key))}
+function mapConfigs(entries,target,allowed,kind){
+ const byName=new Map(),byId=new Map();
+ for(const c of entries){
+  const name=typeof c?.name==="string"?c.name.trim():"";
+  const id=c?.id==null?"":String(c.id).trim();
+  if(!name||!id||!DEFS.some(d=>d.key===name))continue;
+  if(!byName.has(name))byName.set(name,new Set());
+  if(!byId.has(id))byId.set(id,new Set());
+  byName.get(name).add(id);byId.get(id).add(name);
+ }
+ for(const [name,ids] of byName){
+  if(ids.size!==1){configurationErrors.push(kind+": tên "+name+" có nhiều ID");continue}
+  const id=[...ids][0];
+  if(byId.get(id).size!==1){configurationErrors.push(kind+": ID "+id+" được dùng bởi nhiều tên");continue}
+  target.set(name,id);allowed.add(id);
+ }
+}
+function signatureOf(realtime,history){
+ const entries=arr=>arr.map(c=>[String(c?.name??""),String(c?.id??"")])
+  .sort((a,b)=>JSON.stringify(a).localeCompare(JSON.stringify(b)));
+ return JSON.stringify([entries(realtime),entries(history)]);
+}
+function number(raw){if(raw==null||(typeof raw==="string"&&!raw.trim()))return null;const n=Number(raw);return Number.isFinite(n)?n:null}
+function numText(raw,digits){const n=number(raw);return n===null?"--":n.toLocaleString("vi-VN",{minimumFractionDigits:digits??0,maximumFractionDigits:digits??1})}
 function labelValue(key,digits){return numText(item(key).raw,digits)}
-function state(key){const n=number(item(key).raw);if(n!==0&&n!==1)return"—";return key==="door"?(n===1?"OPEN":"CLOSE"):(n===1?"ON":"OFF")}
-function timeText(t){if(!Number.isFinite(t))return"—";return new Date(t).toLocaleString("vi-VN",{hour12:false})}
+function state(key){const n=number(item(key).raw);if(n!==0&&n!==1)return"--";return key==="door"?(n===1?"OPEN":"CLOSE"):(n===1?"ON":"OFF")}
+function timeText(t){if(!Number.isFinite(t))return"--";return new Date(t).toLocaleString("vi-VN",{hour12:false})}
 function ageText(ms){if(!Number.isFinite(ms)||ms<0)return"Không rõ";const m=Math.floor(ms/60000);if(m<1)return"Dưới 1 phút";if(m<60)return m+" phút";const h=Math.floor(m/60);if(h<24)return h+" giờ "+m%60+" phút";return Math.floor(h/24)+" ngày"}
 function sym(name){const s=document.createElementNS("http://www.w3.org/2000/svg","svg");s.setAttribute("class","symbol");const use=document.createElementNS("http://www.w3.org/2000/svg","use");use.setAttribute("href","#"+name);s.appendChild(use);return s}
 function renderMetrics(){
  const valid=[1,2,3,4].map(i=>item("temp"+i)).map(o=>number(o.raw)).filter(n=>n!==null);
  const avg=valid.length===4?valid.reduce((a,b)=>a+b,0)/4:null;
- $("avgTemp").innerHTML=(avg===null?"—":numText(avg,1))+' <span class="unit">°C</span>';
+ $("avgTemp").innerHTML=avg===null?"--":numText(avg,1)+' <span class="unit">°C</span>';
  for(const [k,id,digits] of [["humidity","humidityValue",0],["power_kw","powerValue",3],["energy_kwh","energyValue",2]]){
-  $(id).textContent=labelValue(k,digits)+" "+(DEFS.find(x=>x.key===k).unit);
+  const n=number(item(k).raw);
+   $(id).textContent=n===null?"--":numText(n,digits)+" "+DEFS.find(x=>x.key===k).unit;
  }
  for(const [k,id] of [["humidity","humidityLabel"],["power_kw","powerLabel"],["energy_kwh","energyLabel"]])$(id).textContent=displayName(k);
 }
@@ -186,13 +203,13 @@ function renderTemps(){
  const root=$("temperatures");root.replaceChildren();
  for(let i=1;i<=4;i++){const key="temp"+i,d=item(key);const tile=document.createElement("article");tile.className="thermo-tile";tile.appendChild(sym("thermo"));
  const text=document.createElement("div"),label=document.createElement("div"),val=document.createElement("div");
- label.className="tile-label";label.textContent=displayName(key);val.className="tile-value";val.textContent=numText(d.raw,1)+" °C";text.append(label,val);tile.appendChild(text);root.appendChild(tile)}
+ label.className="tile-label";label.textContent=displayName(key);val.className="tile-value";val.textContent=number(d.raw)===null?"--":numText(d.raw,1)+" °C";text.append(label,val);tile.appendChild(text);root.appendChild(tile)}
 }
 function renderDevices(){
  const root=$("devices");root.replaceChildren();
  for(const key of ["compressor","fan","defrost","door"]){const def=DEFS.find(x=>x.key===key),device=document.createElement("article");device.className="device";device.appendChild(sym(def.icon));
  const name=document.createElement("div");name.className="device-label";name.textContent=displayName(key);
- const stateEl=document.createElement("div");stateEl.className="state-pill";const value=state(key);stateEl.textContent=value;stateEl.classList.add(value==="ON"?"on":value==="OPEN"?"open":"off");
+ const stateEl=document.createElement("div");stateEl.className="state-pill";const value=state(key);stateEl.textContent=value;stateEl.classList.add(value==="ON"?"on":value==="OPEN"?"open":value==="--"?"unknown":"off");
  device.append(name,stateEl);root.appendChild(device)}
 }
 function renderTime(){
@@ -202,13 +219,13 @@ function renderTime(){
  const d=$("dataAge");d.textContent=Number.isFinite(t)?ageText(Date.now()-t):"Chưa có dữ liệu";d.classList.toggle("age",Number.isFinite(t)&&Date.now()-t>STALE);
  const status=$("connection"),text=$("connectionText");
  if(gotValues||Object.keys(historyValues).length){status.className="connected";text.textContent="Đã nhận dữ liệu E-Ra"}
- else if(configs.length){status.className="connected wait";text.textContent="Đang chờ dữ liệu"}
+ else if(ACCEPTED.size){status.className="connected wait";text.textContent="Đang chờ dữ liệu"}
  else{status.className="connected wait";text.textContent="Chưa kết nối E-Ra"}
 }
 function renderDebug(){
  const body=$("debugRows");body.replaceChildren();
- for(const def of DEFS){const o=item(def.key),tr=document.createElement("tr");for(const v of [def.key,DATASTREAM_IDS[def.key],o.valid?displayName(def.key):"Chưa được gán",o.raw===undefined?"—":o.raw,Number.isFinite(o.t)?new Date(o.t).toISOString():"—"]){const td=document.createElement("td");td.textContent=String(v);tr.appendChild(td)}body.appendChild(tr)}
- $("debugCounts").textContent=ACCEPTED.size+" Realtime Configs · "+HISTORY_IDS.size+" History Configs · "+Object.keys(values).length+" giá trị realtime · "+Object.keys(historyValues).length+" giá trị lịch sử";
+ for(const def of DEFS){const o=item(def.key),tr=document.createElement("tr");for(const v of [def.key,REALTIME_IDS.get(def.key)??"--",HISTORY_IDS_BY_NAME.get(def.key)??"--",o.raw==null?"--":o.raw,Number.isFinite(o.t)?new Date(o.t).toISOString():"--"]){const td=document.createElement("td");td.textContent=String(v);tr.appendChild(td)}body.appendChild(tr)}
+ $("debugCounts").textContent=ACCEPTED.size+" Realtime Configs · "+HISTORY_IDS.size+" History Configs · "+Object.keys(values).length+" giá trị realtime · "+Object.keys(historyValues).length+" giá trị lịch sử"+(configurationErrors.length?" · Lỗi: "+configurationErrors.join("; "):"");
 }
 function isEmbedded(){try{return window.self!==window.top}catch{return true}}
 function mobileFitEnabled(){
@@ -251,7 +268,7 @@ function drawChart(){
  const svg=$("historyChart");svg.replaceChildren();const left=56,right=575,top=20,bottom=200,width=right-left,height=bottom-top;
  const now=requestedWindow?.end??Date.now(),start=now-DAY;
  const series=DEFS.slice(0,4).map((d,i)=>{
- const id=idOf(d.key),history=histories.find(h=>String(h.id)===id);
+ const id=HISTORY_IDS_BY_NAME.get(d.key),history=id===undefined?null:histories.find(h=>String(h.id)===id);
  const points=Array.isArray(history?.data)?history.data.map(p=>{
   let t=typeof p.x==="number"?(p.x<1e11?p.x*1000:p.x):Date.parse(p.x);
   const y=number(p.y);return{x:t,y};
@@ -271,9 +288,9 @@ function drawChart(){
  const legend=$("chartLegend");legend.replaceChildren();
  series.forEach(s=>{const line=document.createElement("div");line.className="legend-item";const mark=document.createElement("span");mark.className="legend-line";mark.style.background=s.color;const name=document.createElement("span");name.textContent=displayName(s.key);line.append(mark,name);legend.appendChild(line)});
  const found=all.length>0,empty=$("historyEmpty");empty.hidden=found;
- if(!found){empty.textContent=historyConfigs.length?"Chưa có điểm dữ liệu trong khoảng thời gian đã truy vấn. Có thể thử làm mới lịch sử.":"Chưa cấu hình History Configs cho biểu đồ. Thêm 4 nhiệt độ trong mục lịch sử của E-Ra."}
- $("chartNote").textContent=found?"Dữ liệu lịch sử E-Ra · "+timeText(start)+" – "+timeText(now):historyConfigs.length?"Đã truy vấn: "+timeText(start)+" – "+timeText(now)+". Chưa nhận được điểm dữ liệu.":"Lịch sử cần cấu hình History Configs trong E-Ra.";
- $("refreshHistory").disabled=!historyConfigs.length;
+ if(!found){empty.textContent=chartHistoryConfigured()?"Chưa có điểm dữ liệu trong khoảng thời gian đã truy vấn. Có thể thử làm mới lịch sử.":"Chưa cấu hình History Configs cho biểu đồ. Thêm 4 nhiệt độ trong mục lịch sử của E-Ra."}
+ $("chartNote").textContent=found?"Dữ liệu lịch sử E-Ra · "+timeText(start)+" – "+timeText(now):chartHistoryConfigured()?"Đã truy vấn: "+timeText(start)+" – "+timeText(now)+". Chưa nhận được điểm dữ liệu.":"Lịch sử cần cấu hình History Configs trong E-Ra.";
+ $("refreshHistory").disabled=!chartHistoryConfigured();
 }
 function parseHistoryTime(x){
  if(typeof x==="number")return x<1e11?x*1000:x;
@@ -285,7 +302,7 @@ function latestRealtimeTimestamp(){
  return times.length?Math.max(...times):NaN;
 }
 function requestHistory(force=false){
- if(!widget||!historyConfigs.length||typeof widget.requestHistories!=="function")return;
+ if(!widget||!chartHistoryConfigured()||typeof widget.requestHistories!=="function")return;
  const recent=latestRealtimeTimestamp();
  const anchor=Number.isFinite(recent)?Math.min(recent,Date.now()):Date.now();
  if(!force&&requestedAnchor===anchor)return;
@@ -298,47 +315,57 @@ function requestHistory(force=false){
  }catch(e){log("HISTORY_ERROR",String(e));drawChart()}
 }
 function onConfiguration(input){
- configs=Array.isArray(input?.realtime_configs)?input.realtime_configs:[];
- historyConfigs=Array.isArray(input?.history_configs)?input.history_configs:[];
- ACCEPTED.clear();HISTORY_IDS.clear();NAMES.clear();
- const current=new Map(configs.filter(c=>c&&c.id!=null).map(c=>[String(c.id),c]));
- const historical=new Map(historyConfigs.filter(c=>c&&c.id!=null).map(c=>[String(c.id),c]));
- for(const def of DEFS){
-  const id=idOf(def.key),rc=current.get(id),hc=historical.get(id);
-  if(rc)ACCEPTED.add(id);
-  if(hc)HISTORY_IDS.add(id);
-  const config=rc||hc;
-  if(config)NAMES.set(def.key,String(config.name??"").trim()||def.fallback);
+ const nextRealtime=Array.isArray(input?.realtime_configs)?input.realtime_configs:[];
+ const nextHistory=Array.isArray(input?.history_configs)?input.history_configs:[];
+ const signature=signatureOf(nextRealtime,nextHistory);
+ const changed=signature!==configurationSignature;
+ configs=nextRealtime;historyConfigs=nextHistory;
+ if(changed){
+  configurationSignature=signature;configurationEpoch++;
+  values={};histories=[];historyValues={};gotValues=false;lastReceive=null;
+  requestedWindow=null;requestedAnchor=null;historyRequestCount=0;
  }
- log("CONFIGURATION",{realtime:configs,history:historyConfigs});
+ REALTIME_IDS.clear();HISTORY_IDS_BY_NAME.clear();ACCEPTED.clear();HISTORY_IDS.clear();
+ configurationErrors=[];
+ mapConfigs(configs,REALTIME_IDS,ACCEPTED,"Realtime");
+ mapConfigs(historyConfigs,HISTORY_IDS_BY_NAME,HISTORY_IDS,"History");
+ if(configurationErrors.length)log("CONFIGURATION_ERRORS",configurationErrors);
+ log("CONFIGURATION",{changed,realtime:configs,history:historyConfigs});
  render();drawChart();scheduleMobileHeight();
- if(historyConfigs.length)setTimeout(()=>requestHistory(),350);
+ if(chartHistoryConfigured()){
+  const epoch=configurationEpoch;
+  setTimeout(()=>{if(epoch===configurationEpoch)requestHistory()},350);
+ }
 }
 function onValues(input){
  if(!input||typeof input!=="object"||Array.isArray(input)){log("INVALID_VALUES",input);return}
- values=Object.assign(values,input);gotValues=true;lastReceive=Date.now();log("VALUES",input);render();
- if(historyConfigs.length)requestHistory();
+ const incoming=Object.entries(input).filter(([id])=>ACCEPTED.has(id));
+ if(!incoming.length)return;
+ for(const [id,value] of incoming)values[id]=value;
+ gotValues=true;lastReceive=Date.now();log("VALUES",Object.fromEntries(incoming));render();
+ if(chartHistoryConfigured())requestHistory();
 }
 function onHistory(input){
  const incoming=Array.isArray(input)?input:Array.isArray(input?.histories)?input.histories:[];
- histories=incoming;
+ histories=incoming.filter(series=>HISTORY_IDS.has(String(series?.id??"")));
  historyValues={};
- for(const series of incoming){
-  const id=String(series?.id??"");
-  if(!HISTORY_IDS.has(id)||!Array.isArray(series?.data))continue;
+ for(const series of histories){
+  const id=String(series.id);
+  if(!Array.isArray(series?.data))continue;
   let newest=null;
   for(const point of series.data){
    const t=parseHistoryTime(point?.x),value=number(point?.y);
    if(!Number.isFinite(t)||value===null)continue;
+   if(requestedWindow&&(t<requestedWindow.start||t>requestedWindow.end))continue;
    if(newest===null||t>newest.t)newest={t,value};
   }
   if(newest)historyValues[id]={value:newest.value,last_updated:new Date(newest.t).toISOString()};
  }
- log("HISTORY",{series:incoming.length,points:incoming.map(s=>({id:s.id,count:s.data?.length??0})),latestIDs:Object.keys(historyValues)});
+ log("HISTORY",{series:histories.length,points:histories.map(s=>({id:s.id,count:s.data?.length??0})),latestIDs:Object.keys(historyValues)});
  render();drawChart();scheduleMobileHeight();
 }
 $("refreshHistory").addEventListener("click",()=>requestHistory(true));
-$("copyDebug").addEventListener("click",async()=>{const content=JSON.stringify({configs,historyConfigs,values,ids:DATASTREAM_IDS,logs},null,2);try{await navigator.clipboard.writeText(content);$("copyDebug").textContent="Đã sao chép"}catch{const url=URL.createObjectURL(new Blob([content],{type:"application/json"}));const a=document.createElement("a");a.href=url;a.download="era-debug.json";a.click();setTimeout(()=>URL.revokeObjectURL(url),1000)}});
+$("copyDebug").addEventListener("click",async()=>{const content=JSON.stringify({configs,historyConfigs,values,realtimeIds:Object.fromEntries(REALTIME_IDS),historyIds:Object.fromEntries(HISTORY_IDS_BY_NAME),configurationErrors,logs},null,2);try{await navigator.clipboard.writeText(content);$("copyDebug").textContent="Đã sao chép"}catch{const url=URL.createObjectURL(new Blob([content],{type:"application/json"}));const a=document.createElement("a");a.href=url;a.download="era-debug.json";a.click();setTimeout(()=>URL.revokeObjectURL(url),1000)}});
 window.addEventListener("resize",()=>{drawChart();scheduleMobileHeight()});
 render();drawChart();
 if(typeof EraWidget==="function"){
