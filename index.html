@@ -3,375 +3,87 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#ffffff">
-<title>VOX Cool Dashboard</title>
+<title>VOX Cool Dashboard · Test</title>
 <style>
-:root{--navy:#080e80;--blue:#0788f7;--line:#bdd5fd;--mint:#08ad57;--light:#f4f9ff;--muted:#637598;--red:#d62838;font-family:Inter,system-ui,-apple-system,"Segoe UI",Arial,sans-serif;color:var(--navy);background:#eff6ff}
-*{box-sizing:border-box}html{scroll-behavior:smooth}html.era-mobile-fit,html.era-mobile-fit body{overflow-y:hidden;overscroll-behavior-y:none}body{margin:0;min-width:280px;background:linear-gradient(145deg,#fafdff 0%,#f2f8ff 60%,#e8f3ff 100%);color:var(--navy)}
-.shell{max-width:1480px;margin:14px auto 0;padding:21px 23px 25px;background:#fff;border:1px solid #b4d0fb;border-radius:25px;box-shadow:0 16px 40px #0067bb13}
-.header{display:flex;gap:18px;align-items:center;justify-content:space-between;margin-bottom:21px}
-.identity{display:flex;align-items:center;gap:18px;min-width:0}.brand-logo{width:235px;height:auto;object-fit:contain;flex:none}.vertical{width:1px;height:60px;background:#a6bbe3;flex:none}
-.room-title{display:flex;align-items:center;gap:10px;min-width:0}.room-title .symbol{width:39px;height:39px;color:var(--blue);flex:none}
-p{margin:0}.subtitle{margin-top:0;font-size:13px;color:#1c2d61;line-height:1.4}
-.status-area{display:flex;align-items:center;gap:12px;flex-wrap:wrap;justify-content:flex-end}.connected{display:inline-flex;gap:6px;align-items:center;border:1px solid #bcf2cd;background:#e1fce9;border-radius:13px;color:#09733d;font-size:12px;font-weight:750;padding:10px 12px;white-space:nowrap}
-.connected.wait{background:#eff4ff;color:#56678e;border-color:#d3dffa}.connected.error{background:#fff0f1;color:#b32937;border-color:#ffcbce}
-.updated{display:flex;align-items:center;gap:6px;border-left:1px solid #b6c9e7;padding-left:13px;font-size:12px;white-space:nowrap}
-.symbol{width:24px;height:24px;vertical-align:middle;stroke:currentColor;fill:none;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
-.metric-row{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:15px}
-.metric{border:1px solid #b4d2ff;border-radius:18px;padding:17px 16px;display:flex;align-items:center;gap:15px;min-height:116px;min-width:0;background:linear-gradient(150deg,#fff 3%,#e4f3ff 100%);overflow:hidden;position:relative}
-.metric:after{content:"";position:absolute;width:125px;height:75px;right:-35px;bottom:-56px;transform:rotate(-26deg);border-radius:28px;background:#1899ff18}
-.metric .symbol{width:48px;height:48px;color:var(--blue);flex:none;stroke-width:2}
-.metric .field{position:relative;z-index:1;min-width:0}.metric .label{font-size:12px;font-weight:650;margin-bottom:6px;color:#24376b}.metric .value{font-size:clamp(21px,2.5vw,34px);letter-spacing:-.035em;font-weight:850;font-variant-numeric:tabular-nums;white-space:nowrap}
-.metric .unit{font-size:.6em;font-weight:700}
-.metric.power{background:linear-gradient(150deg,#fff 0%,#ffedd0 100%);border-color:#f4ddbd}.metric.power .symbol{color:#f4a300}.metric.power:after{background:#ffbb291d}
-.metric.energy{background:linear-gradient(150deg,#fff 0%,#efe4ff 100%);border-color:#ded0fb}.metric.energy .symbol{color:#9953ed}.metric.energy:after{background:#9953ed1d}
-.main-grid{display:grid;grid-template-columns:0.97fr 1.03fr;gap:15px;margin-top:18px}
-.bottom-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:15px;margin-top:17px}
-.panel{border:1px solid #afcafa;border-radius:18px;background:linear-gradient(135deg,#fff,#f9fcff);padding:18px;min-width:0}
-.section-title{display:flex;align-items:center;gap:11px;font-size:20px;font-weight:800;letter-spacing:-.02em;margin:0 0 18px}.section-title .symbol{color:var(--blue);width:25px;height:25px}
-.thermo-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
-.thermo-tile{display:flex;align-items:center;gap:14px;border:1px solid #b6d1f9;border-radius:16px;background:linear-gradient(145deg,#fff 0%,#e3f1ff 100%);padding:14px 16px;min-width:0;min-height:93px}
-.thermo-tile .symbol{width:30px;height:42px;flex:none;color:#0abb5b}.tile-label{color:#25386e;font-size:13px;line-height:1.3;overflow-wrap:anywhere}
-.tile-value{font-size:clamp(19px,2.4vw,28px);font-weight:850;letter-spacing:-.03em;margin-top:3px;font-variant-numeric:tabular-nums;white-space:nowrap}.tile-value .unit{font-size:.67em}
-.chart-title{display:flex;flex-wrap:wrap;align-items:baseline;gap:5px}.chart-title small{font-size:13px;font-weight:500}
-.chart-layout{display:flex;gap:10px;align-items:center;min-height:216px}.chart-area{position:relative;min-width:0;flex:1}
-#historyChart{display:block;width:100%;height:auto;min-height:190px}
-.chart-legend{display:grid;gap:9px;font-size:12px;max-width:130px;min-width:110px}
-.legend-item{display:flex;align-items:center;gap:7px;word-break:break-word}.legend-line{width:20px;height:4px;flex:none;border-radius:3px}
-.chart-empty{position:absolute;inset:20% 10% 12% 10%;display:flex;align-items:center;justify-content:center;text-align:center;color:#526b9f;font-size:12px;line-height:1.5;padding:12px;background:#ffffffd4;border-radius:10px}
-.chart-empty[hidden]{display:none}
-.chart-footnote{font-size:11px;color:var(--muted);margin:5px 0 0 4px;line-height:1.5}.refresh{margin-top:8px;border:1px solid #c6d9f7;border-radius:8px;color:#1a5eb4;background:#f1f8ff;padding:6px 9px;font-size:11px;cursor:pointer}.refresh:disabled{opacity:.55;cursor:not-allowed}
-.device-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
-.device{background:linear-gradient(145deg,#fff,#e1f0ff);border:1px solid #b8d3fc;border-radius:14px;padding:12px 9px 13px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px;min-width:0;text-align:center}
-.device .symbol{width:33px;height:33px;color:#067fec}.device .device-label{font-size:13px;font-weight:750;word-break:break-word;line-height:1.3}
-.state-pill{min-width:84%;border-radius:12px;padding:7px 10px;color:#fff;font-weight:850;font-size:15px;line-height:1;background:#7498c7}
-.state-pill.on{background:linear-gradient(180deg,#03b658,#008b3a)}.state-pill.open{background:linear-gradient(180deg,#ffa500,#df7500)}.state-pill.off{background:linear-gradient(180deg,#92afd7,#6b8eba)}.state-pill.unknown{background:#edf2f9;color:#6e7e97;border:1px solid #cdd8e8}
-.info-rows{display:grid;gap:0;margin-top:-6px}.info-row{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 8px;border-bottom:1px solid #dfe8f8;font-size:13px}
-.info-row:last-child{border:0}.info-name{display:flex;align-items:center;gap:8px}.info-name .symbol{width:19px;height:19px}
-.info-value{background:#e9f2ff;border:1px solid #d6e5fc;border-radius:9px;padding:7px 10px;font-weight:700;text-align:right;font-variant-numeric:tabular-nums}
-.info-value.age{color:#bb303b;background:#fff0f1;border-color:#fac0c8}
-.status-note{font-size:11px;color:#56698e;margin-top:9px;line-height:1.4}
-.debug[hidden]{display:none!important}.debug{margin-top:22px;border:1px solid #d7e6fc;border-radius:13px;background:#fafdff}.debug summary{cursor:pointer;font-size:12px;color:#55709c;font-weight:750;padding:12px 15px}.debug-inner{padding:2px 15px 15px;overflow:auto}
-.debug table{border-collapse:collapse;width:100%;font-size:12px}th,td{padding:8px;text-align:left;border-bottom:1px solid #d8e6f7;white-space:nowrap}
-.debug pre{max-height:200px;overflow:auto;background:#eef5ff;color:#223d7f;padding:12px;border-radius:8px;font-size:10px;white-space:pre-wrap;overflow-wrap:anywhere}
-.debug button{margin-top:10px;border:1px solid #b2cef4;border-radius:7px;background:#eaf4ff;color:#164bac;padding:8px 12px;cursor:pointer}
-.footer{height:36px;background:linear-gradient(8deg,#168ffe 0%,#b7ddff 30%,#f0f8ff 52%,transparent 52%);margin-top:3px}
-@media(max-width:1200px){.brand-logo{width:182px}.identity{gap:11px}.header{gap:10px}.subtitle{font-size:12px}.metric{gap:11px;padding:13px}.metric .symbol{width:37px;height:40px}.metric .value{font-size:26px}.panel{padding:14px}.thermo-tile{padding:12px}.device-grid{gap:8px}.device .device-label{font-size:12px}}
-@media(max-width:960px){.header{align-items:flex-start;flex-wrap:wrap}.status-area{width:100%;justify-content:space-between}.metric-row{grid-template-columns:repeat(2,minmax(0,1fr))}.main-grid,.bottom-grid{grid-template-columns:1fr}.chart-layout{min-height:200px}.device-grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
-@media(max-width:560px){body{background:#fff}.shell{border:0;border-radius:0;margin:0;padding:14px 12px 16px;box-shadow:none}.header{margin-bottom:15px}.identity{width:100%;gap:8px;align-items:flex-start;flex-wrap:wrap}.brand-logo{width:145px}.vertical{height:42px}.room-title .symbol{width:27px;height:27px}.room-title{gap:5px;flex:1;min-width:150px}h1{font-size:21px}.subtitle{font-size:11px}.status-area{gap:8px}.connected{font-size:11px;padding:8px}.updated{font-size:10px;padding-left:8px}.metric-row,.main-grid,.bottom-grid{gap:9px}.metric-row{grid-template-columns:repeat(2,minmax(0,1fr))}.metric{border-radius:12px;padding:11px 10px;gap:9px;min-height:86px}.metric .symbol{width:26px;height:30px}.metric .label{font-size:10px}.metric .value{font-size:clamp(20px,5vw,27px)}.main-grid{margin-top:10px}.bottom-grid{margin-top:10px}.panel{padding:12px;border-radius:13px}.section-title{font-size:16px;margin-bottom:11px;gap:7px}.section-title .symbol{width:21px;height:21px}.thermo-grid{gap:8px}.thermo-tile{padding:10px;min-height:76px;gap:8px;border-radius:11px}.thermo-tile .symbol{width:22px;height:32px}.tile-label{font-size:12px}.tile-value{font-size:22px}.device-grid{gap:7px}.device{padding:10px 5px;border-radius:10px}.device .symbol{width:24px;height:24px}.device .device-label{font-size:10px}.state-pill{font-size:12px;min-width:95%;padding:7px 4px}.info-row{padding:8px 3px;font-size:11px}.info-value{font-size:11px}.chart-layout{align-items:flex-start;gap:4px;flex-direction:column}.chart-legend{display:flex;flex-wrap:wrap;gap:8px 12px;max-width:none}.legend-item{font-size:10px}.chart-title small{font-size:10px}#historyChart{min-height:150px}.chart-area{width:100%}.chart-empty{font-size:11px}.footer{height:18px}}
-@media(max-width:355px){.brand-logo{width:125px}.metric{gap:5px;padding:9px}.metric .symbol{width:23px}.metric .value{font-size:18px}.tile-value{font-size:19px}.device-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+body{font:15px system-ui,sans-serif;margin:0;color:#0b237a;background:#f3f8ff}
+#loading{padding:25px;text-align:center}#loading.error{color:#ae2730}
 </style>
 </head>
 <body>
-<svg aria-hidden="true" style="position:absolute;width:0;height:0;overflow:hidden" xmlns="http://www.w3.org/2000/svg">
-<symbol id="snow" viewBox="0 0 24 24"><path d="M12 2v20M4 6l16 12M20 6 4 18M8 4l4 4 4-4M8 20l4-4 4 4M3 10l5 1-1 5M21 10l-5 1 1 5M3 14l5-1-1-5M21 14l-5-1 1-5"/></symbol>
-<symbol id="thermo" viewBox="0 0 24 24"><path d="M9 14.7V5a3 3 0 0 1 6 0v9.7a5 5 0 1 1-6 0Z"/><path d="M12 9v9"/><circle cx="12" cy="18" r="1"/></symbol>
-<symbol id="drop" viewBox="0 0 24 24"><path d="M12 2C10 6 4 11 4 15a8 8 0 0 0 16 0c0-4-6-9-8-13Z"/><path d="M8.5 16a4 4 0 0 0 4 4"/></symbol>
-<symbol id="bolt" viewBox="0 0 24 24"><path d="m13 2-9 12h7l-1 8 10-13h-7z"/></symbol>
-<symbol id="motor" viewBox="0 0 24 24"><rect x="5" y="7" width="14" height="10" rx="2"/><path d="M8 7V5h8v2M3 10v4M21 10v4M8 17v2M16 17v2M9 9v6M12 9v6M15 9v6"/></symbol>
-<symbol id="fan" viewBox="0 0 24 24"><circle cx="12" cy="12" r="2"/><path d="M12 10c-3-8-10-8-7-2 1 2 3 3 5 3m4 1c8-3 8-10 2-7-2 1-3 3-3 5m-1 4c3 8 10 8 7 2-1-2-3-3-5-3m-4-1c-8 3-8 10-2 7 2-1 3-3 3-5"/></symbol>
-<symbol id="door" viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="18" rx="1"/><path d="M10 3v18M15 12h1"/></symbol>
-<symbol id="calendar" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M7 2v6M17 2v6M3 10h18"/></symbol>
-<symbol id="clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
-<symbol id="sync" viewBox="0 0 24 24"><path d="M20 7V3l-4 4h4a8 8 0 0 0-14-2M4 17v4l4-4H4a8 8 0 0 0 14 2"/></symbol>
-<symbol id="info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7h.01"/></symbol>
-<symbol id="wifi" viewBox="0 0 24 24"><path d="M2 9c6-6 14-6 20 0M5 12c4-4 10-4 14 0M8.5 15.5c2-2 5-2 7 0"/><circle cx="12" cy="19" r="1"/></symbol>
-</svg>
-<div class="shell">
-<header class="header">
- <div class="identity">
-  <img class="brand-logo" id="brandLogo" alt="VOX Cool – Innovative Cooling Solutions" width="320" height="87">
-  <div class="vertical"></div>
-  <div class="room-title"><svg class="symbol"><use href="#snow"/></svg><div class="subtitle">Giám sát nhiệt độ, độ ẩm và trạng thái thiết bị</div></div>
- </div>
- <div class="status-area">
-  <span id="connection" class="connected wait"><svg class="symbol" style="width:17px;height:17px"><use href="#wifi"/></svg><span id="connectionText">Đang chờ E-Ra</span></span>
- </div>
-</header>
-<section class="metric-row" aria-label="Chỉ số chính">
- <article class="metric"><svg class="symbol"><use href="#thermo"/></svg><div class="field"><div class="label">Nhiệt độ trung bình</div><div class="value" id="avgTemp">— <span class="unit">°C</span></div></div></article>
- <article class="metric"><svg class="symbol"><use href="#drop"/></svg><div class="field"><div class="label" id="humidityLabel">Độ ẩm</div><div class="value" id="humidityValue">— <span class="unit">%</span></div></div></article>
- <article class="metric power"><svg class="symbol"><use href="#bolt"/></svg><div class="field"><div class="label" id="powerLabel">Công suất</div><div class="value" id="powerValue">— <span class="unit">kW</span></div></div></article>
- <article class="metric energy"><svg class="symbol"><use href="#bolt"/></svg><div class="field"><div class="label" id="energyLabel">Điện năng tiêu thụ</div><div class="value" id="energyValue">— <span class="unit">kWh</span></div></div></article>
-</section>
-<div class="main-grid">
- <section class="panel"><h2 class="section-title"><svg class="symbol"><use href="#thermo"/></svg>Nhiệt độ từng vị trí</h2><div class="thermo-grid" id="temperatures"></div></section>
- <section class="panel">
-  <h2 class="section-title chart-title"><svg class="symbol"><use href="#snow"/></svg>Biểu đồ nhiệt độ <small>(24 giờ cuối có dữ liệu)</small></h2>
-  <div class="chart-layout">
-   <div class="chart-area">
-    <svg id="historyChart" viewBox="0 0 590 240" role="img" aria-label="Biểu đồ lịch sử nhiệt độ 24 giờ"></svg>
-    <div class="chart-empty" id="historyEmpty">Chưa cấu hình dữ liệu lịch sử. Vui lòng thêm tối đa 4 History Configs trong Widget E-Ra.</div>
-   </div>
-   <div class="chart-legend" id="chartLegend"></div>
-  </div>
-  <p class="chart-footnote" id="chartNote">Biểu đồ sử dụng dữ liệu lịch sử thực từ E-Ra.</p>
-  <button class="refresh" id="refreshHistory" type="button" disabled>Cập nhật biểu đồ</button>
- </section>
-</div>
-<div class="bottom-grid">
- <section class="panel"><h2 class="section-title"><svg class="symbol"><use href="#motor"/></svg>Trạng thái thiết bị</h2><div class="device-grid" id="devices"></div></section>
- <section class="panel"><h2 class="section-title"><svg class="symbol"><use href="#info"/></svg>Thông tin cập nhật</h2>
-  <div class="info-rows">
-   <div class="info-row"><div class="info-name"><svg class="symbol"><use href="#calendar"/></svg>Thời điểm dữ liệu</div><div class="info-value" id="dataTime">—</div></div>
-   <div class="info-row"><div class="info-name"><svg class="symbol"><use href="#clock"/></svg>Độ trễ dữ liệu</div><div class="info-value" id="dataAge">—</div></div>
-  </div>
- </section>
-</div>
-<details class="debug" hidden aria-hidden="true"><summary>Chi tiết kỹ thuật · E-Ra Debug</summary>
- <div class="debug-inner"><div id="debugCounts" class="status-note"></div>
-  <div style="overflow:auto"><table><thead><tr><th>Datastream</th><th>ID Realtime</th><th>ID History</th><th>Giá trị</th><th>last_updated</th></tr></thead><tbody id="debugRows"></tbody></table></div>
-  <button type="button" id="copyDebug">Sao chép / tải JSON debug</button><pre id="debugLog"></pre>
- </div>
-</details>
-</div>
-<div class="footer" aria-hidden="true"></div>
-<script src="https://www.unpkg.com/@eohjsc/era-widget@1.1.3/src/index.js"></script>
+<div id="loading">Đang tải Dashboard VOX Cool thử nghiệm…</div>
 <script>
-"use strict";
-/* Tên Datastream là khóa kỹ thuật; E-Ra cấp ID theo từng widget/thiết bị. */
-const DEFS=[
- {key:"temp1",fallback:"Nhiệt độ 1",unit:"°C"},
- {key:"temp2",fallback:"Nhiệt độ 2",unit:"°C"},
- {key:"temp3",fallback:"Nhiệt độ 3",unit:"°C"},
- {key:"temp4",fallback:"Nhiệt độ 4",unit:"°C"},
- {key:"humidity",fallback:"Độ ẩm",unit:"%"},
- {key:"compressor",fallback:"Máy nén",type:"switch",icon:"motor"},
- {key:"fan",fallback:"Quạt",type:"switch",icon:"fan"},
- {key:"defrost",fallback:"Xả đá",type:"switch",icon:"snow"},
- {key:"door",fallback:"Cửa kho",type:"door",icon:"door"},
- {key:"power_kw",fallback:"Công suất",unit:"kW"},
- {key:"energy_kwh",fallback:"Điện năng tiêu thụ",unit:"kWh"}
-];
-const $=id=>document.getElementById(id);
-const DAY=86400000,STALE=5*60000;
-const CHART_COLORS=["#058bf5","#09ba62","#ffae00","#9958f4"];
-let configs=[],historyConfigs=[],values={},histories=[],historyValues={},logs=[],widget=null,gotValues=false,lastReceive=null,lastHeight=0,mobileResizeTimer=null,mobileObserver=null,mobileAttempts=0;
-let requestedWindow=null,requestedAnchor=null,historyRequestCount=0,configurationSignature=null,configurationEpoch=0;
-const REALTIME_IDS=new Map(),HISTORY_IDS_BY_NAME=new Map(),ACCEPTED=new Set(),HISTORY_IDS=new Set();
-let configurationErrors=[];
-$("brandLogo").src="data:image/webp;base64,"+"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";
-function log(kind,data){logs.push({at:new Date().toISOString(),kind,data});if(logs.length>24)logs.shift();$("debugLog").textContent=logs.map(x=>x.at+" "+x.kind+" "+JSON.stringify(x.data)).join("\n");}
-function displayName(key){return DEFS.find(s=>s.key===key)?.fallback||key}
-function item(key){
- const id=REALTIME_IDS.get(key);
- const o=id===undefined?null:values[id];
- const t=parseHistoryTime(o?.last_updated);
- return{raw:o?.value,t,stale:Number.isFinite(t)&&Date.now()-t>STALE,id:id??null,valid:id!==undefined,source:"realtime"};
+/*
+ * Preview-only loader pinned to the tested GitHub commit.
+ * Keeps the existing Dashboard/layout intact while applying the energy display rule.
+ * For production, incorporate the patch into the full era_dashboard.html source.
+ */
+(async()=>{
+ const sourceUrl="https://cdn.jsdelivr.net/gh/voxcooldriver/voxcool_ui_era_iot@ec6e4997133eca05da6fe5e6bc1ef3280650117d/era_dashboard.html";
+ const replaceOnce=(source,from,to)=>{
+   const start=source.indexOf(from);
+   if(start<0||source.indexOf(from,start+from.length)>=0)throw Error("Không tìm thấy duy nhất vị trí cập nhật: "+from.slice(0,45));
+   return source.slice(0,start)+to+source.slice(start+from.length);
+ };
+ try{
+  const response=await fetch(sourceUrl,{cache:"no-cache"});
+  if(!response.ok)throw Error("HTTP "+response.status);
+  let html=await response.text();
+  if(!html.includes("REALTIME_IDS")||!html.includes("function renderMetrics()"))throw Error("Mã nguồn không đúng phiên bản thử nghiệm");
+  html=replaceOnce(html,
+   '.metric .unit{font-size:.6em;font-weight:700}',
+   '.metric .unit{font-size:.6em;font-weight:700}.metric.energy .value.unit-below{white-space:normal;overflow-wrap:anywhere}.metric.energy .value.unit-below .unit{display:block;margin-top:2px;font-size:18px;line-height:1.1}');
+  html=replaceOnce(html,
+   'function labelValue(key,digits){return numText(item(key).raw,digits)}',
+   `function labelValue(key,digits){return numText(item(key).raw,digits)}
+function energyText(raw){
+ const n=number(raw);
+ if(n===null)return"--";
+ const magnitude=Math.abs(n);
+ if(magnitude>=10000)return Math.trunc(n).toLocaleString("vi-VN",{maximumFractionDigits:0});
+ if(magnitude>=1000)return (Math.trunc(n*10)/10).toLocaleString("vi-VN",{minimumFractionDigits:1,maximumFractionDigits:1});
+ return n.toLocaleString("vi-VN",{minimumFractionDigits:2,maximumFractionDigits:2});
 }
-function chartHistoryConfigured(){return DEFS.slice(0,4).some(d=>HISTORY_IDS_BY_NAME.has(d.key))}
-function mapConfigs(entries,target,allowed,kind){
- const byName=new Map(),byId=new Map();
- for(const c of entries){
-  const name=typeof c?.name==="string"?c.name.trim():"";
-  const id=c?.id==null?"":String(c.id).trim();
-  if(!name||!id||!DEFS.some(d=>d.key===name))continue;
-  if(!byName.has(name))byName.set(name,new Set());
-  if(!byId.has(id))byId.set(id,new Set());
-  byName.get(name).add(id);byId.get(id).add(name);
- }
- for(const [name,ids] of byName){
-  if(ids.size!==1){configurationErrors.push(kind+": tên "+name+" có nhiều ID");continue}
-  const id=[...ids][0];
-  if(byId.get(id).size!==1){configurationErrors.push(kind+": ID "+id+" được dùng bởi nhiều tên");continue}
-  target.set(name,id);allowed.add(id);
- }
-}
-function signatureOf(realtime,history){
- const entries=arr=>arr.map(c=>[String(c?.name??""),String(c?.id??"")])
-  .sort((a,b)=>JSON.stringify(a).localeCompare(JSON.stringify(b)));
- return JSON.stringify([entries(realtime),entries(history)]);
-}
-function number(raw){if(raw==null||(typeof raw==="string"&&!raw.trim()))return null;const n=Number(raw);return Number.isFinite(n)?n:null}
-function numText(raw,digits){const n=number(raw);return n===null?"--":n.toLocaleString("vi-VN",{minimumFractionDigits:digits??0,maximumFractionDigits:digits??1})}
-function labelValue(key,digits){return numText(item(key).raw,digits)}
-function state(key){const n=number(item(key).raw);if(n!==0&&n!==1)return"--";return key==="door"?(n===1?"OPEN":"CLOSE"):(n===1?"ON":"OFF")}
-function timeText(t){if(!Number.isFinite(t))return"--";return new Date(t).toLocaleString("vi-VN",{hour12:false})}
-function ageText(ms){if(!Number.isFinite(ms)||ms<0)return"Không rõ";const m=Math.floor(ms/60000);if(m<1)return"Dưới 1 phút";if(m<60)return m+" phút";const h=Math.floor(m/60);if(h<24)return h+" giờ "+m%60+" phút";return Math.floor(h/24)+" ngày"}
-function sym(name){const s=document.createElementNS("http://www.w3.org/2000/svg","svg");s.setAttribute("class","symbol");const use=document.createElementNS("http://www.w3.org/2000/svg","use");use.setAttribute("href","#"+name);s.appendChild(use);return s}
-function renderMetrics(){
- const valid=[1,2,3,4].map(i=>item("temp"+i)).map(o=>number(o.raw)).filter(n=>n!==null);
- const avg=valid.length===4?valid.reduce((a,b)=>a+b,0)/4:null;
- $("avgTemp").innerHTML=avg===null?"--":numText(avg,1)+' <span class="unit">°C</span>';
- for(const [k,id,digits] of [["humidity","humidityValue",0],["power_kw","powerValue",3],["energy_kwh","energyValue",2]]){
+function fitEnergyValue(){
+ const el=$("energyValue"),parent=el?.parentElement;
+ if(!el||!parent||!parent.clientWidth)return;
+ el.classList.remove("unit-below");el.style.fontSize="";
+ const baseline=parseFloat(getComputedStyle(el).fontSize)||34;
+ const minSize=Math.min(18,baseline);
+ for(let px=baseline;px>=minSize&&el.scrollWidth>parent.clientWidth+1;px-=1)
+  el.style.fontSize=Math.max(minSize,px-1)+"px";
+ if(el.scrollWidth>parent.clientWidth+1){el.style.fontSize=minSize+"px";el.classList.add("unit-below")}
+}`);
+  html=replaceOnce(html,
+   ` for(const [k,id,digits] of [["humidity","humidityValue",0],["power_kw","powerValue",3],["energy_kwh","energyValue",2]]){
   const n=number(item(k).raw);
    $(id).textContent=n===null?"--":numText(n,digits)+" "+DEFS.find(x=>x.key===k).unit;
+ }`,
+   ` for(const [k,id,digits] of [["humidity","humidityValue",0],["power_kw","powerValue",3],["energy_kwh","energyValue",2]]){
+  const n=number(item(k).raw);
+  if(k==="energy_kwh"){
+   const el=$(id);
+   if(n===null)el.textContent="--";
+   else{
+    const amount=document.createElement("span"),unit=document.createElement("span");
+    amount.textContent=energyText(n);
+    unit.className="unit";unit.textContent=" kWh";
+    el.replaceChildren(amount,unit);
+   }
+   fitEnergyValue();
+  }else $(id).textContent=n===null?"--":numText(n,digits)+" "+DEFS.find(x=>x.key===k).unit;
+ }`);
+  html=replaceOnce(html,
+   'window.addEventListener("resize",()=>{drawChart();scheduleMobileHeight()});',
+   'window.addEventListener("resize",()=>{fitEnergyValue();drawChart();scheduleMobileHeight()});');
+  // Render the original E-Ra widget in this same iframe (not in a nested iframe).
+  document.open();document.write(html);document.close();
+ }catch(error){
+  const message=document.getElementById("loading");
+  message.className="error";
+  message.textContent="Không tải được Dashboard thử nghiệm: "+error.message;
+  console.error("VOX Cool test loader:",error);
  }
- for(const [k,id] of [["humidity","humidityLabel"],["power_kw","powerLabel"],["energy_kwh","energyLabel"]])$(id).textContent=displayName(k);
-}
-function renderTemps(){
- const root=$("temperatures");root.replaceChildren();
- for(let i=1;i<=4;i++){const key="temp"+i,d=item(key);const tile=document.createElement("article");tile.className="thermo-tile";tile.appendChild(sym("thermo"));
- const text=document.createElement("div"),label=document.createElement("div"),val=document.createElement("div");
- label.className="tile-label";label.textContent=displayName(key);val.className="tile-value";val.textContent=number(d.raw)===null?"--":numText(d.raw,1)+" °C";text.append(label,val);tile.appendChild(text);root.appendChild(tile)}
-}
-function renderDevices(){
- const root=$("devices");root.replaceChildren();
- for(const key of ["compressor","fan","defrost","door"]){const def=DEFS.find(x=>x.key===key),device=document.createElement("article");device.className="device";device.appendChild(sym(def.icon));
- const name=document.createElement("div");name.className="device-label";name.textContent=displayName(key);
- const stateEl=document.createElement("div");stateEl.className="state-pill";const value=state(key);stateEl.textContent=value;stateEl.classList.add(value==="ON"?"on":value==="OPEN"?"open":value==="--"?"unknown":"off");
- device.append(name,stateEl);root.appendChild(device)}
-}
-function renderTime(){
- const stamps=DEFS.map(s=>item(s.key)).filter(o=>o.valid&&o.raw!=null&&Number.isFinite(o.t)).map(o=>o.t);
- const t=stamps.length?Math.max(...stamps):NaN;
- $("dataTime").textContent=timeText(t);
- const d=$("dataAge");d.textContent=Number.isFinite(t)?ageText(Date.now()-t):"Chưa có dữ liệu";d.classList.toggle("age",Number.isFinite(t)&&Date.now()-t>STALE);
- const status=$("connection"),text=$("connectionText");
- if(gotValues||Object.keys(historyValues).length){status.className="connected";text.textContent="Đã nhận dữ liệu E-Ra"}
- else if(ACCEPTED.size){status.className="connected wait";text.textContent="Đang chờ dữ liệu"}
- else{status.className="connected wait";text.textContent="Chưa kết nối E-Ra"}
-}
-function renderDebug(){
- const body=$("debugRows");body.replaceChildren();
- for(const def of DEFS){const o=item(def.key),tr=document.createElement("tr");for(const v of [def.key,REALTIME_IDS.get(def.key)??"--",HISTORY_IDS_BY_NAME.get(def.key)??"--",o.raw==null?"--":o.raw,Number.isFinite(o.t)?new Date(o.t).toISOString():"--"]){const td=document.createElement("td");td.textContent=String(v);tr.appendChild(td)}body.appendChild(tr)}
- $("debugCounts").textContent=ACCEPTED.size+" Realtime Configs · "+HISTORY_IDS.size+" History Configs · "+Object.keys(values).length+" giá trị realtime · "+Object.keys(historyValues).length+" giá trị lịch sử"+(configurationErrors.length?" · Lỗi: "+configurationErrors.join("; "):"");
-}
-function isEmbedded(){try{return window.self!==window.top}catch{return true}}
-function mobileFitEnabled(){
- return isEmbedded()&&window.innerWidth<=800&&!!widget&&typeof widget.requestAdjustMobileHeight==="function";
-}
-function actualContentHeight(){
- // Measure element bottom, not documentElement.scrollHeight (may reflect iframe viewport).
- const shell=document.querySelector(".shell"),footer=document.querySelector(".footer");
- const bottom=Math.max(shell?.getBoundingClientRect().bottom??0,footer?.getBoundingClientRect().bottom??0);
- return Math.ceil(bottom+window.scrollY+16);
-}
-function resizeIframe(force=false){
- const enabled=mobileFitEnabled();
- document.documentElement.classList.toggle("era-mobile-fit",enabled);
- if(!enabled){lastHeight=0;return}
- const h=actualContentHeight();
- if(!Number.isFinite(h)||h<250||h>20000||(!force&&Math.abs(h-lastHeight)<8))return;
- try{
-  widget.requestAdjustMobileHeight(h);
-  lastHeight=h;
-  log("MOBILE_HEIGHT",{requested:h,content:actualContentHeight(),reason:force?"initial-or-retry":"layout-change"});
- }catch(e){document.documentElement.classList.remove("era-mobile-fit");log("MOBILE_HEIGHT_ERROR",String(e))}
-}
-function scheduleMobileHeight(force=false){
- if(mobileResizeTimer!==null)clearTimeout(mobileResizeTimer);
- mobileResizeTimer=setTimeout(()=>{mobileResizeTimer=null;resizeIframe(force)},180);
-}
-function initMobileFit(){
- scheduleMobileHeight(true);
- if(typeof ResizeObserver==="function"){
-  mobileObserver=new ResizeObserver(()=>scheduleMobileHeight());
-  for(const node of [document.querySelector(".shell"),document.querySelector(".footer")])if(node)mobileObserver.observe(node);
- }
- // Delay retries cover fonts, WebView layout and E-Ra widget initialization order.
- [450,1300,2800].forEach(delay=>setTimeout(()=>{if(mobileFitEnabled())resizeIframe(true)},delay));
-}
-function render(){renderMetrics();renderTemps();renderDevices();renderTime();renderDebug()}
-function svgNode(tag,attributes){const el=document.createElementNS("http://www.w3.org/2000/svg",tag);for(const k in attributes)el.setAttribute(k,String(attributes[k]));return el}
-function drawChart(){
- const svg=$("historyChart");svg.replaceChildren();const left=56,right=575,top=20,bottom=200,width=right-left,height=bottom-top;
- const now=requestedWindow?.end??Date.now(),start=now-DAY;
- const series=DEFS.slice(0,4).map((d,i)=>{
- const id=HISTORY_IDS_BY_NAME.get(d.key),history=id===undefined?null:histories.find(h=>String(h.id)===id);
- const points=Array.isArray(history?.data)?history.data.map(p=>{
-  let t=typeof p.x==="number"?(p.x<1e11?p.x*1000:p.x):Date.parse(p.x);
-  const y=number(p.y);return{x:t,y};
- }).filter(p=>Number.isFinite(p.x)&&p.x>=start&&p.x<=now&&p.y!==null).sort((a,b)=>a.x-b.x):[];
- return{key:d.key,id,color:CHART_COLORS[i],points:points.length>700?points.filter((p,j)=>j%Math.ceil(points.length/700)===0):points};
- });
- const all=series.flatMap(s=>s.points.map(p=>p.y));let low=all.length?Math.min(...all):-28,high=all.length?Math.max(...all):-18;
- const margin=Math.max(1,(high-low)*.2);low-=margin;high+=margin;if(low===high){low--;high++;}
- const xScale=t=>left+(t-start)/DAY*width,yScale=y=>bottom-(y-low)/(high-low)*height;
- for(let i=0;i<=4;i++){
-  const y=top+i*height/4,line=svgNode("line",{x1:left,y1:y,x2:right,y2:y,stroke:"#cfdef6","stroke-width":1});svg.appendChild(line);
-  const text=svgNode("text",{x:left-8,y:y+4,"text-anchor":"end",fill:"#4f679a","font-size":13});text.textContent=(high-(high-low)*i/4).toFixed(1)+"°";svg.appendChild(text);
- }
- for(let i=0;i<=4;i++){const x=left+width*i/4;svg.appendChild(svgNode("line",{x1:x,y1:top,x2:x,y2:bottom,stroke:"#e0e9fa","stroke-width":1}));
-  const t=svgNode("text",{x,y:bottom+24,"text-anchor":"middle",fill:"#4f679a","font-size":13});t.textContent=new Date(start+DAY*i/4).toLocaleTimeString("vi-VN",{hour:"2-digit",minute:"2-digit"});svg.appendChild(t)}
- for(const s of series){if(!s.points.length)continue;const valid=s.points.map(p=>xScale(p.x).toFixed(1)+","+yScale(p.y).toFixed(1)).join(" ");if(s.points.length>1)svg.appendChild(svgNode("polyline",{points:valid,stroke:s.color,fill:"none","stroke-width":3,"stroke-linecap":"round","stroke-linejoin":"round"}));else svg.appendChild(svgNode("circle",{cx:xScale(s.points[0].x),cy:yScale(s.points[0].y),r:3,fill:s.color}))}
- const legend=$("chartLegend");legend.replaceChildren();
- series.forEach(s=>{const line=document.createElement("div");line.className="legend-item";const mark=document.createElement("span");mark.className="legend-line";mark.style.background=s.color;const name=document.createElement("span");name.textContent=displayName(s.key);line.append(mark,name);legend.appendChild(line)});
- const found=all.length>0,empty=$("historyEmpty");empty.hidden=found;
- if(!found){empty.textContent=chartHistoryConfigured()?"Chưa có điểm dữ liệu trong khoảng thời gian đã truy vấn. Có thể thử làm mới lịch sử.":"Chưa cấu hình History Configs cho biểu đồ. Thêm 4 nhiệt độ trong mục lịch sử của E-Ra."}
- $("chartNote").textContent=found?"Dữ liệu lịch sử E-Ra · "+timeText(start)+" – "+timeText(now):chartHistoryConfigured()?"Đã truy vấn: "+timeText(start)+" – "+timeText(now)+". Chưa nhận được điểm dữ liệu.":"Lịch sử cần cấu hình History Configs trong E-Ra.";
- $("refreshHistory").disabled=!chartHistoryConfigured();
-}
-function parseHistoryTime(x){
- if(typeof x==="number")return x<1e11?x*1000:x;
- if(typeof x==="string"&&/^\d{10,13}$/.test(x)){const n=Number(x);return x.length===10?n*1000:n}
- return Date.parse(x);
-}
-function latestRealtimeTimestamp(){
- const times=Object.values(values).map(v=>parseHistoryTime(v?.last_updated)).filter(Number.isFinite);
- return times.length?Math.max(...times):NaN;
-}
-function requestHistory(force=false){
- if(!widget||!chartHistoryConfigured()||typeof widget.requestHistories!=="function")return;
- const recent=latestRealtimeTimestamp();
- const anchor=Number.isFinite(recent)?Math.min(recent,Date.now()):Date.now();
- if(!force&&requestedAnchor===anchor)return;
- requestedAnchor=anchor;requestedWindow={start:anchor-DAY,end:anchor};
- historyRequestCount++;
- const empty=$("historyEmpty");empty.hidden=false;empty.textContent="Đang tải dữ liệu lịch sử E-Ra…";
- try{
-  widget.requestHistories(new Date(requestedWindow.start),new Date(requestedWindow.end));
-  log("HISTORY_REQUEST",{start:new Date(requestedWindow.start).toISOString(),end:new Date(requestedWindow.end).toISOString(),anchorSource:Number.isFinite(recent)?"realtime_last_updated":"now",attempt:historyRequestCount});
- }catch(e){log("HISTORY_ERROR",String(e));drawChart()}
-}
-function onConfiguration(input){
- const nextRealtime=Array.isArray(input?.realtime_configs)?input.realtime_configs:[];
- const nextHistory=Array.isArray(input?.history_configs)?input.history_configs:[];
- const signature=signatureOf(nextRealtime,nextHistory);
- const changed=signature!==configurationSignature;
- configs=nextRealtime;historyConfigs=nextHistory;
- if(changed){
-  configurationSignature=signature;configurationEpoch++;
-  values={};histories=[];historyValues={};gotValues=false;lastReceive=null;
-  requestedWindow=null;requestedAnchor=null;historyRequestCount=0;
- }
- REALTIME_IDS.clear();HISTORY_IDS_BY_NAME.clear();ACCEPTED.clear();HISTORY_IDS.clear();
- configurationErrors=[];
- mapConfigs(configs,REALTIME_IDS,ACCEPTED,"Realtime");
- mapConfigs(historyConfigs,HISTORY_IDS_BY_NAME,HISTORY_IDS,"History");
- if(configurationErrors.length)log("CONFIGURATION_ERRORS",configurationErrors);
- log("CONFIGURATION",{changed,realtime:configs,history:historyConfigs});
- render();drawChart();scheduleMobileHeight();
- if(chartHistoryConfigured()){
-  const epoch=configurationEpoch;
-  setTimeout(()=>{if(epoch===configurationEpoch)requestHistory()},350);
- }
-}
-function onValues(input){
- if(!input||typeof input!=="object"||Array.isArray(input)){log("INVALID_VALUES",input);return}
- const incoming=Object.entries(input).filter(([id])=>ACCEPTED.has(id));
- if(!incoming.length)return;
- for(const [id,value] of incoming)values[id]=value;
- gotValues=true;lastReceive=Date.now();log("VALUES",Object.fromEntries(incoming));render();
- if(chartHistoryConfigured())requestHistory();
-}
-function onHistory(input){
- const incoming=Array.isArray(input)?input:Array.isArray(input?.histories)?input.histories:[];
- histories=incoming.filter(series=>HISTORY_IDS.has(String(series?.id??"")));
- historyValues={};
- for(const series of histories){
-  const id=String(series.id);
-  if(!Array.isArray(series?.data))continue;
-  let newest=null;
-  for(const point of series.data){
-   const t=parseHistoryTime(point?.x),value=number(point?.y);
-   if(!Number.isFinite(t)||value===null)continue;
-   if(requestedWindow&&(t<requestedWindow.start||t>requestedWindow.end))continue;
-   if(newest===null||t>newest.t)newest={t,value};
-  }
-  if(newest)historyValues[id]={value:newest.value,last_updated:new Date(newest.t).toISOString()};
- }
- log("HISTORY",{series:histories.length,points:histories.map(s=>({id:s.id,count:s.data?.length??0})),latestIDs:Object.keys(historyValues)});
- render();drawChart();scheduleMobileHeight();
-}
-$("refreshHistory").addEventListener("click",()=>requestHistory(true));
-$("copyDebug").addEventListener("click",async()=>{const content=JSON.stringify({configs,historyConfigs,values,realtimeIds:Object.fromEntries(REALTIME_IDS),historyIds:Object.fromEntries(HISTORY_IDS_BY_NAME),configurationErrors,logs},null,2);try{await navigator.clipboard.writeText(content);$("copyDebug").textContent="Đã sao chép"}catch{const url=URL.createObjectURL(new Blob([content],{type:"application/json"}));const a=document.createElement("a");a.href=url;a.download="era-debug.json";a.click();setTimeout(()=>URL.revokeObjectURL(url),1000)}});
-window.addEventListener("resize",()=>{drawChart();scheduleMobileHeight()});
-render();drawChart();
-if(typeof EraWidget==="function"){
- try{widget=new EraWidget();widget.init({needRealtimeConfigs:true,needHistoryConfigs:true,needActions:false,maxRealtimeConfigsCount:11,minRealtimeConfigsCount:0,maxHistoryConfigsCount:5,minHistoryConfigsCount:0,maxActionsCount:0,minActionsCount:0,mobileHeight:650,onConfiguration,onValues,onHistory});log("INIT","Đã khởi tạo EraWidget");initMobileFit()}catch(e){log("INIT_ERROR",String(e));$("connectionText").textContent="Lỗi E-Ra"}
-}else{log("SCRIPT_ERROR","Không tải được thư viện EraWidget");$("connectionText").textContent="Chưa tải được E-Ra"}
-setInterval(()=>{renderTime()},30000);
+})();
 </script>
 </body>
 </html>
